@@ -4,6 +4,9 @@ import {
 } from 'element-ui'
 import request from '@/utils/request'
 
+import store from '../store'
+import router from '../router'
+
 
 const common = {
 	isAndroid: (/android/gi).test(navigator.appVersion),
@@ -37,8 +40,17 @@ const common = {
 
 common.isMobile = common.isAndroid || common.isIDevice
 
-////////////////////////////////////////////
-/// ajax
+
+//跳转
+common.func_redirect = function(path, query) {
+	//
+	router.push({
+		path: path,
+		query: query
+	})
+}
+
+// ajax
 common.func_axios = function(axios_data) {
 	//
 	if (typeof(axios_data.error) == "undefined") {
@@ -56,11 +68,35 @@ common.func_axios = function(axios_data) {
 		.then(axios_data.success)
 		.catch(function(obj) {
 			if (obj.response && obj.response.status == 422) {
-				// debugger
-				let err = error.response.data.data;
+				// 422错误信息处理
+				let err = obj.response.data.data;
 				//
-				store.dispatch('funcSetErr422', err)				
-				console.log(store.getters.v_error_422)
+				var form_rules = axios_data.page.form_rules[err.err_field];
+				console.log(form_rules);
+				if (form_rules) {
+					//删除已存在validator规则
+					for (var index in form_rules) {
+						var r = form_rules[index];
+						if (r['validator']) {
+							form_rules.splice(index, 1);
+						}
+					}
+				}
+				//
+				axios_data.page.form_rules_422[err.err_field] = false; //作用：不让错误出现第二次
+				//
+				form_rules.push({
+					validator: function(rule, value, callback) {
+						if (axios_data.page.form_rules_422[err.err_field] == false) {
+							axios_data.page.form_rules_422[err.err_field] = true;
+							callback(new Error(err.err_msg));
+						} else {
+							callback();
+						}
+					},
+				});
+				// console.log(rules);
+				axios_data.page.$refs.form.validateField(err.err_field);
 				//
 				common.func_alert('提交的数据不正确，请重新输入', 'error');
 				//

@@ -56,6 +56,7 @@
 						trigger: 'blur'
 					}, ]
 				},
+				form_rules_422: [],
 				loading: false,
 				pwdType: 'password',
 				redirect: undefined
@@ -110,10 +111,11 @@
 				let pwd = app_base64.encode(page.form.password);
 				//
 				page.$cc.func_axios({
+					page: page,
 					url: '/oa/login',
 					data: {
 						'username': page.form.username,
-						// 'pwd': pwd,
+						// 'password': pwd,
 					},
 					success: function(obj) {
 						// console.log(obj)
@@ -126,12 +128,15 @@
 							page.$store.dispatch('funcSetData', login_data)
 							console.log(page.$store.state)
 							//跳转
-							page.$router.push({
-								path: '/dashboard',
-								query: {
-									id: 'xxx',
-								}
+							page.$cc.func_redirect('/dashboard', {
+								id: 'xxx'
 							})
+							// 							page.$router.push({
+							// 								path: '/dashboard',
+							// 								query: {
+							// 									id: 'xxx',
+							// 								}
+							// 							})
 							//
 						} else {
 							page.$cc.func_alert(obj.data.errmsg, 'error')
