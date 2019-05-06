@@ -17,16 +17,18 @@ const oa_user = {
 			for (let key in data) {
 				state[key] = data[key]
 			}
-			// 			state.OA__x = data.OA__x
-			// 			state.OA__acc_id = data.OA__acc_id
-			// 			state.OA__nonce_str = data.OA__nonce_str
-			// 			state.OA__ENC_CODE = data.OA__ENC_CODE
+			//
 		},
 		PAGES: (state, pages) => {
 			state.pages = pages
+		},
+		ERR_422: (state, err) => {
+			//
+			state.v_error_422[err.err_field] = err
+			//
 		}
 	},
-
+	//
 	actions: {
 		//设置用户信息
 		funcSetData({
@@ -63,6 +65,16 @@ const oa_user = {
 				//
 			})
 		},
+		//
+		funcSetErr422({
+			commit,
+			state
+		}, err) {
+			return new Promise((resolve, reject) => {
+				//
+				commit('ERR_422', err)
+			})
+		}
 	}
 }
 

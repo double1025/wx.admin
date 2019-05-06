@@ -39,7 +39,7 @@ common.isMobile = common.isAndroid || common.isIDevice
 
 ////////////////////////////////////////////
 /// ajax
-common.func_axios = function(axios_data) {	
+common.func_axios = function(axios_data) {
 	//
 	if (typeof(axios_data.error) == "undefined") {
 		axios_data.error = function(data) {
@@ -56,11 +56,14 @@ common.func_axios = function(axios_data) {
 		.then(axios_data.success)
 		.catch(function(obj) {
 			if (obj.response && obj.response.status == 422) {
+				// debugger
+				let err = error.response.data.data;
 				//
-				var error = obj.response.data.data;
-				console.log(errors);
+				store.dispatch('funcSetErr422', err)				
+				console.log(store.getters.v_error_422)
 				//
 				common.func_alert('提交的数据不正确，请重新输入', 'error');
+				//
 			} else {
 				axios_data.error(obj);
 			}

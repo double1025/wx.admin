@@ -1,18 +1,18 @@
 <template>
 	<div class="login-container">
-		<el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+		<el-form ref="form" :model="form" :rules="form_rules" class="login-form" auto-complete="on" label-position="left">
 			<h3 class="title">微信公众平台</h3>
 			<el-form-item prop="username">
 				<span class="svg-container">
 					<svg-icon icon-class="user" />
 				</span>
-				<el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="帐号" />
+				<el-input v-model="form.username" name="username" type="text" auto-complete="on" placeholder="帐号" />
 			</el-form-item>
 			<el-form-item prop="password">
 				<span class="svg-container">
 					<svg-icon icon-class="password" />
 				</span>
-				<el-input :type="pwdType" v-model="loginForm.password" name="password" auto-complete="on" placeholder="密码"
+				<el-input :type="pwdType" v-model="form.password" name="password" auto-complete="on" placeholder="密码"
 				 @keyup.enter.native="handleLogin" />
 				<span class="show-pwd" @click="showPwd">
 					<svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'" />
@@ -23,7 +23,7 @@
 					登陆
 				</el-button>
 			</el-form-item>
-			<el-form-item v-show='true'>
+			<el-form-item v-show='false'>
 				<el-button :loading="loading" type="primary" style="width:100%;" @click='test'>
 					test
 				</el-button>
@@ -33,55 +33,28 @@
 </template>
 
 <script>
-	import {
-		isvalidUsername
-	} from '@/utils/validate'
-
-	import {
-		getToken,
-		setToken,
-		removeToken
-	} from '@/utils/auth'
-
 	import Base64 from '@/utils/base64'
-	import {
-		asyncRouterMap
-	} from '../../router'
 
 	let page
 	export default {
 		name: 'Login',
 		data() {
-			const validateUsername = (rule, value, callback) => {
-				if (!isvalidUsername(value)) {
-					callback(new Error('请输入正确的用户名'))
-				} else {
-					callback()
-				}
-			}
-			const validatePass = (rule, value, callback) => {
-				if (value.length < 5) {
-					callback(new Error('密码不能小于5位'))
-				} else {
-					callback()
-				}
-			}
 			return {
-				loginForm: {
+				form: {
 					username: '',
 					password: ''
 				},
-				loginRules: {
+				form_rules: {
 					username: [{
 						required: true,
-						trigger: 'blur',
-						validator: validateUsername
-					}],
+						message: '账号不能为空',
+						trigger: 'blur'
+					}, ],
 					password: [{
 						required: true,
-						trigger: 'blur',
-						validator: validatePass
-					}]
+						message: '请输入6-20位密码',
+						trigger: 'blur'
+					}, ]
 				},
 				loading: false,
 				pwdType: 'password',
@@ -104,11 +77,11 @@
 				// setToken('token')
 				// 				console.log(this.redirect)
 				// 				console.log(this.$route)
-				console.log(asyncRouterMap)
-				this.$router.addRoutes(asyncRouterMap)
-				this.$router.options.routes = asyncRouterMap
-				//
-				console.log(this.$router)
+				// 				console.log(asyncRouterMap)
+				// 				this.$router.addRoutes(asyncRouterMap)
+				// 				this.$router.options.routes = asyncRouterMap
+				// 				//
+				// 				console.log(this.$router)
 				//
 			},
 			showPwd() {
@@ -120,14 +93,27 @@
 			},
 			func_login() {
 				//
+				page.$refs.form.validate(valid => {
+					if (valid) {
+						console.log('ok')
+						page.__func_login()
+					} else {
+						console.log('error submit!!')
+						return false
+					}
+				})
+				//
+			},
+			__func_login() {
+				//
 				let app_base64 = new Base64();
-				let pwd = app_base64.encode(page.loginForm.password);
+				let pwd = app_base64.encode(page.form.password);
 				//
 				page.$cc.func_axios({
 					url: '/oa/login',
 					data: {
-						'username': page.loginForm.username,
-						'pwd': pwd,
+						'username': page.form.username,
+						// 'pwd': pwd,
 					},
 					success: function(obj) {
 						// console.log(obj)
@@ -136,9 +122,10 @@
 							//
 							// debugger
 							let login_data = obj.data.data.data
+							//记录cookie
 							page.$store.dispatch('funcSetData', login_data)
 							console.log(page.$store.state)
-							//
+							//跳转
 							page.$router.push({
 								path: '/dashboard',
 								query: {

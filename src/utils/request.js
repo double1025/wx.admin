@@ -8,6 +8,8 @@ import {
 	getToken
 } from '@/utils/auth'
 
+import common from '@/utils/common'
+
 
 // 创建axios实例
 let service = axios.create({
@@ -87,7 +89,7 @@ service.interceptors.response.use(
 	error => {
 		console.log('response.error')
 		console.log(error)
-
+		//
 		loading.close()
 
 		return Promise.reject(error)
