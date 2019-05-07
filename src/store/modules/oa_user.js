@@ -6,8 +6,8 @@ const oa_user = {
 		OA__acc_id: '',
 		OA__nonce_str: '',
 		OA__ENC_CODE: '',
-		pages: [], //权限页面
-		v_error_422: [], //表单验证错误提示
+		page_role: [], //权限页面
+		page_vue: null, //页面的vue组件对象
 	},
 
 	mutations: {
@@ -22,10 +22,8 @@ const oa_user = {
 		PAGES: (state, pages) => {
 			state.pages = pages
 		},
-		ERR_422: (state, err) => {
-			//
-			state.v_error_422[err.err_field] = err
-			//
+		PAGE_VUE: (state, page_vue) => {
+			state.page_vue = page_vue
 		}
 	},
 	//
@@ -65,16 +63,6 @@ const oa_user = {
 				//
 			})
 		},
-		//
-		funcSetErr422({
-			commit,
-			state
-		}, err) {
-			return new Promise((resolve, reject) => {
-				//
-				commit('ERR_422', err)
-			})
-		}
 	}
 }
 

@@ -40,7 +40,14 @@ const common = {
 
 common.isMobile = common.isAndroid || common.isIDevice
 
-
+//设置页面的vue组件对象
+common.func_set_vue = function(page_vue) {
+	store.commit('PAGE_VUE', page_vue);
+}
+//获取页面的vue组件对象
+common.func_get_vue = function() {
+	return store.getters.page_vue
+}
 //跳转
 common.func_redirect = function(path, query) {
 	//
@@ -49,7 +56,6 @@ common.func_redirect = function(path, query) {
 		query: query
 	})
 }
-
 // ajax
 common.func_axios = function(axios_data) {
 	//
@@ -71,7 +77,9 @@ common.func_axios = function(axios_data) {
 				// 422错误信息处理
 				let err = obj.response.data.data;
 				//
-				var form_rules = axios_data.page.form_rules[err.err_field];
+				let g_vue = common.func_get_vue()
+				//
+				let form_rules = g_vue.form_rules[err.err_field];
 				console.log(form_rules);
 				if (form_rules) {
 					//删除已存在validator规则
@@ -83,12 +91,12 @@ common.func_axios = function(axios_data) {
 					}
 				}
 				//
-				axios_data.page.form_rules_422[err.err_field] = false; //作用：不让错误出现第二次
+				g_vue.form_rules_422[err.err_field] = false; //作用：不让错误出现第二次
 				//
 				form_rules.push({
 					validator: function(rule, value, callback) {
-						if (axios_data.page.form_rules_422[err.err_field] == false) {
-							axios_data.page.form_rules_422[err.err_field] = true;
+						if (g_vue.form_rules_422[err.err_field] == false) {
+							g_vue.form_rules_422[err.err_field] = true;
 							callback(new Error(err.err_msg));
 						} else {
 							callback();
@@ -96,7 +104,7 @@ common.func_axios = function(axios_data) {
 					},
 				});
 				// console.log(rules);
-				axios_data.page.$refs.form.validateField(err.err_field);
+				g_vue.$refs.form.validateField(err.err_field);
 				//
 				common.func_alert('提交的数据不正确，请重新输入', 'error');
 				//

@@ -71,7 +71,8 @@
 			}
 		},
 		mounted() {
-			page = this
+			this.$cc.func_set_vue(this)
+			page = this.$cc.func_get_vue()
 		},
 		methods: {
 			test() {
@@ -115,7 +116,7 @@
 					url: '/oa/login',
 					data: {
 						'username': page.form.username,
-						// 'password': pwd,
+						'password': pwd,
 					},
 					success: function(obj) {
 						// console.log(obj)
