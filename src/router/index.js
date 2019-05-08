@@ -92,17 +92,16 @@ export const constantRouterMap = [{
 		}]
 	},
 	{
-		path: '/test',
+		path: '/prize',
 		component: Layout,
-		// redirect: '/test/1',
-		name: 'test',
+		name: 'prize',
 		meta: {
 			title: '活动相关',
 			icon: 'nested'
 		},
 		children: [{
 				path: 'prize',
-				component: () => import('@/views/common/common'), // Parent router-view
+				component: () => import('@/views/common/common'),
 				name: '我的奖品',
 				meta: {
 					title: '我的奖品'
@@ -160,6 +159,46 @@ export const constantRouterMap = [{
 			},
 		]
 	},
+	////////
+	////////
+	////////
+	{
+		path: '/test',
+		component: Layout,
+		// name: 'test',
+		meta: {
+			title: '测试',
+			icon: 'form'
+		},
+		children: [{
+				path: '/test_app',
+				component: () => import('@/views/common/common'),
+				name: '测试应用',
+				meta: {
+					title: '测试应用'
+				},
+				children: [{
+						path: 'list',
+						component: () => import('@/views/test/list'),
+						meta: {
+							title: '列表'
+						}
+					},
+					{
+						path: 'edit',
+						component: () => import('@/views/test/edit'),
+						meta: {
+							title: '编辑'
+						}
+					}
+				]
+			},
+			////////
+		]
+	},
+	////////
+	////////
+	////////
 	{
 		path: 'external-link',
 		component: Layout,
@@ -179,19 +218,6 @@ export const constantRouterMap = [{
 ]
 
 export const asyncRouterMap = [{
-		path: '/test',
-		component: Layout,
-		children: [{
-			path: 'index',
-			name: 'test',
-			component: () => import('@/views/test/index'),
-			meta: {
-				title: 'test',
-				icon: 'form'
-			}
-		}]
-	},
-	{
 		path: '/login',
 		component: () => import('@/views/login/index'),
 		hidden: true
