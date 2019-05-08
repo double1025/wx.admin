@@ -141,6 +141,10 @@
 							//
 						} else {
 							page.$cc.func_alert(obj.data.errmsg, 'error')
+							//跳转
+							page.$cc.func_redirect('/dashboard', {
+								id: 'xxx'
+							})
 						}
 					}
 				})
