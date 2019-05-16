@@ -18,6 +18,12 @@
 					<svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'" />
 				</span>
 			</el-form-item>
+			<el-form-item prop="code">
+				<span class="svg-container">
+					<svg-icon icon-class="user" />
+				</span>
+				<!-- <el-input v-model="form.code" type="text" placeholder="验证码" /> -->
+			</el-form-item>
 			<el-form-item>
 				<el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="func_login">
 					登陆
@@ -129,22 +135,11 @@
 							page.$store.dispatch('funcSetData', login_data)
 							console.log(page.$store.state)
 							//跳转
-							page.$cc.func_redirect('/dashboard', {
-								id: 'xxx'
-							})
-							// 							page.$router.push({
-							// 								path: '/dashboard',
-							// 								query: {
-							// 									id: 'xxx',
-							// 								}
+							// 							page.$cc.func_redirect('/dashboard', {
+							// 								id: 'xxx'
 							// 							})
-							//
 						} else {
 							page.$cc.func_alert(obj.data.errmsg, 'error')
-							//跳转
-							page.$cc.func_redirect('/dashboard', {
-								id: 'xxx'
-							})
 						}
 					}
 				})
