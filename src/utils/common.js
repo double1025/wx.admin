@@ -42,7 +42,7 @@ common.isMobile = common.isAndroid || common.isIDevice
 
 //设置页面的vue组件对象
 common.func_set_vue = function(page_vue) {
-	store.commit('PAGE_VUE', page_vue);
+	store.commit('PageVue', page_vue);
 }
 //获取页面的vue组件对象
 common.func_get_vue = function() {
@@ -55,6 +55,16 @@ common.func_redirect = function(path, query) {
 		path: path,
 		query: query
 	})
+}
+//获取token
+common.func_get_token = function() {
+	if (store.getters.token) {
+		//pass
+	} else {
+		store.commit('Token')
+	}
+	//
+	return store.getters.token;
 }
 // ajax
 common.func_axios = function(axios_data) {

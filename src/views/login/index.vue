@@ -18,11 +18,11 @@
 					<svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'" />
 				</span>
 			</el-form-item>
-			<el-form-item prop="code">
-				<span class="svg-container">
-					<svg-icon icon-class="user" />
-				</span>
-				<!-- <el-input v-model="form.code" type="text" placeholder="验证码" /> -->
+			<el-form-item prop="code" v-if="show_code">
+				<el-input v-model="form.code" placeholder="验证码" style="width: 50%;" />
+				<div style="float:left;" @click.native.prevent="func_reload_vcode">
+					<img style="height: 40px;padding-top: 12px;" :src='vcode' />
+				</div>
 			</el-form-item>
 			<el-form-item>
 				<el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="func_login">
@@ -40,6 +40,7 @@
 
 <script>
 	import Base64 from '@/utils/base64'
+	import Cookies from 'js-cookie'
 
 	let page
 	export default {
@@ -65,7 +66,9 @@
 				form_rules_422: [],
 				loading: false,
 				pwdType: 'password',
-				redirect: undefined
+				redirect: undefined,
+				show_code: false,
+				vcode: '',
 			}
 		},
 		watch: {
@@ -91,6 +94,7 @@
 				// 				//
 				// 				console.log(this.$router)
 				//
+				console.log(this.$store)
 			},
 			showPwd() {
 				if (this.pwdType === 'password') {
@@ -127,17 +131,24 @@
 					success: function(obj) {
 						// console.log(obj)
 						if (obj.data.errcode == 0) {
-							page.$cc.func_alert('成功')
 							//
 							// debugger
 							let login_data = obj.data.data.data
-							//记录cookie
-							page.$store.dispatch('funcSetData', login_data)
-							console.log(page.$store.state)
-							//跳转
-							// 							page.$cc.func_redirect('/dashboard', {
-							// 								id: 'xxx'
-							// 							})
+							let token = login_data['token'];
+							if (!token) {
+								page.$cc.func_alert('参数异常', 'error')
+								return
+							}
+							//记录cookie	
+							for (let key in login_data) {
+								Cookies.set(key, login_data[key])
+							}
+							//
+							page.$cc.func_alert('登陆成功')
+							//跳转					
+							page.$cc.func_redirect('/dashboard', {
+								__d: new Date().valueOf()
+							})
 						} else {
 							page.$cc.func_alert(obj.data.errmsg, 'error')
 						}
@@ -145,6 +156,14 @@
 				})
 				//
 			},
+			//刷新验证码
+			func_reload_vcode() {
+				// process.env.BASE_API
+				console.log('func_reload_vcode')
+				page.vcode = ''
+				page.vcode = process.env.BASE_API + '/admin/login/vcode?v=' + (new Date()).valueOf()
+				//
+			}
 		}
 	}
 </script>

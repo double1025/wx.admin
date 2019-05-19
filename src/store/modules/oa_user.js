@@ -1,68 +1,77 @@
 import Cookies from 'js-cookie'
+import common from '@/utils/common'
 
 const oa_user = {
 	state: {
-		OA__x: '',
-		OA__acc_id: '',
-		OA__nonce_str: '',
-		OA__ENC_CODE: '',
+		token: null,
 		page_role: [], //权限页面
 		page_vue: null, //页面的vue组件对象
 	},
 
 	mutations: {
-		OA_DATA: (state, data) => {
-			console.log(data)
-			//
-			for (let key in data) {
-				state[key] = data[key]
-			}
-			//
+		PageRole: (state, page_role) => {
+			state.page_role = page_role
 		},
-		PAGES: (state, pages) => {
-			state.pages = pages
-		},
-		PAGE_VUE: (state, page_vue) => {
+		PageVue: (state, page_vue) => {
 			state.page_vue = page_vue
+		},
+		Token: (state) => {
+			let token = Cookies.get('token')
+			state.token = token
 		}
 	},
 	//
 	actions: {
-		//设置用户信息
-		funcSetData({
+		//获取用户权限
+		funcGetPageRole({
 			commit
-		}, data) {
-			console.log('login')
+		}) {
+			console.log('funcGetPageRole')
 			return new Promise((resolve, reject) => {
-				//设置cookie
-				for (let key in data) {
-					Cookies.set(key, data[key])
-				}
 				//
-				commit('OA_DATA', data)
+				common.func_axios({
+					url: '/oa/center/init',
+					data: {},
+					success: function(obj) {
+						console.log(obj)
+						if (obj.data.errcode == 0) {
+							console.log('获取用户权限：成功')
+							commit('PageRole', obj.data.data)
+							//
+							resolve(obj)
+						} else {
+							obj.message = obj.data.errmsg
+							reject(obj)
+						}
+					},
+					error: function(obj) {
+						reject(obj)
+					}
+				})
+				//
 			})
 		},
-		//删除用户信息
-		funcDelData({
+		//退出登陆
+		funcLogout({
 			commit,
 			state
 		}) {
-			return new Promise((resolve, reject) => {
-				let data = {
-					OA__x: '',
-					OA__acc_id: '',
-					OA__nonce_str: '',
-					OA__ENC_CODE: '',
-				}
-				commit('OA_DATA', data)
-				commit('PAGES', [])
-				//删除cookie
-				for (let key in data) {
-					Cookies.remove(key)
-				}
-				//
-			})
+			console.log('funcLogout')
+			//
+			let data = {
+				token: '',
+				OA__acc_name: '',
+				OA__acc_role: '',
+			}
+			//删除cookie
+			for (let key in data) {
+				Cookies.remove(key)
+			}
+			//
+			state.token = null
+			commit('PageRole', [])
 		},
+		//
 	}
 }
 
