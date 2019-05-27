@@ -28,6 +28,7 @@ import common from '@/utils/common'
 
 
 Vue.prototype.$cc = common
+Vue.prototype.cc = common
 
 
 Vue.use(ElementUI)

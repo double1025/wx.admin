@@ -82,7 +82,7 @@
 				page_total: 20,
 			}
 		},
-		mounted() {
+		mounted() {			
 			// console.log(page.xxx)
 		},
 		methods: {

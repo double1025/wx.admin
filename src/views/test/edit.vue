@@ -1,7 +1,7 @@
 <template>
 	<el-container>
-		<el-main>
-			<el-form ref="form" :model="form" :rules="form_rules" label-width="12%">
+		<el-main class='x-main-edit'>
+			<el-form ref="form" :model="form" :rules="form_rules" size="mini" label-width="15%">
 				<el-tabs type="border-card">
 					<el-tab-pane label="基础配置">
 						<el-form-item label="姓名">
@@ -17,10 +17,13 @@
 							<el-date-picker v-model="form.date1" type="date" placeholder="日期" /> -
 							<el-time-picker v-model="form.date2" type="fixed-time" placeholder="时间" />
 						</el-form-item>
+						<el-form-item label="排序">
+							<el-input-number v-model="form.num" :step="2"></el-input-number>
+						</el-form-item>
 					</el-tab-pane>
 					<el-tab-pane label="其他配置">
 						<el-form-item label="选择日期-时间">
-							<el-date-picker v-model="form.date1" type="datetime" placeholder="选择日期时间">
+							<el-date-picker v-model="form.date1" type="datetime" :picker-options="pickerOptions" placeholder="选择日期时间">
 							</el-date-picker>
 						</el-form-item>
 						<el-form-item label="复选框">
@@ -42,11 +45,13 @@
 						</el-form-item>
 					</el-tab-pane>
 				</el-tabs>
-				<el-form-item>
+				<!-- 按钮部分 -->
+				<div class="save_wrap">
 					<el-button size="mini" type="success" @click="funcSave">保存</el-button>
-					<el-button size="mini" @click="funcBack">返回</el-button>
+					<el-button size="mini" @click="funcBack">返回</el-button>&nbsp;&nbsp;
 					<el-checkbox label="保存后停留" name="xxx" />
-				</el-form-item>
+				</div>
+				<!---->
 			</el-form>
 		</el-main>
 	</el-container>
@@ -56,16 +61,47 @@
 	export default {
 		data() {
 			return {
+				test: this.cc.isMobile,
 				form: {
 					name: '',
 					sex: 0,
 					name: '',
 					name: '',
 					desc: '',
+					type: [],
+					num: 0,
 				},
 				form_rules: {},
 				form_rules_422: [],
+				pickerOptions: {
+					disabledDate(time) {
+						return time.getTime() > Date.now();
+					},
+					shortcuts: [{
+						text: '今天',
+						onClick(picker) {
+							picker.$emit('pick', new Date());
+						}
+					}, {
+						text: '昨天',
+						onClick(picker) {
+							const date = new Date();
+							date.setTime(date.getTime() - 3600 * 1000 * 24);
+							picker.$emit('pick', date);
+						}
+					}, {
+						text: '一周前',
+						onClick(picker) {
+							const date = new Date();
+							date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+							picker.$emit('pick', date);
+						}
+					}]
+				},
 			}
+		},
+		mounted() {
+			console.log(this.test)
 		},
 		methods: {
 			funcSave() {

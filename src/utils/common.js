@@ -66,9 +66,9 @@ common.func_get_token = function() {
 	//
 	return store.getters.token;
 }
-// ajax
+//axios
 common.func_axios = function(axios_data) {
-	//
+	//自定义error事件
 	if (typeof(axios_data.error) == "undefined") {
 		axios_data.error = function(data) {
 			console.log('error');

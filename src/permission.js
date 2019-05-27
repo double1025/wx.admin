@@ -8,7 +8,7 @@ NProgress.configure({
 	showSpinner: false
 }) // NProgress configuration
 
-const whiteList = ['/login'] // 不重定向白名单
+const whiteList = ['/login', '/404', '/test_app/list', '/test_app/edit'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
 	console.log('router-BEGIN')
 	NProgress.start()
@@ -16,7 +16,8 @@ router.beforeEach((to, from, next) => {
 	console.log('from:' + from.path)
 	console.log('to:' + to.path)
 	//
-	if (whiteList.indexOf(to.path) !== -1) {
+	// if (whiteList.indexOf(to.path) !== -1) {
+	if (true) {
 		//白名单页面，不需判断
 		next()
 	} else {
@@ -33,7 +34,7 @@ router.beforeEach((to, from, next) => {
 					console.log(err)
 					store.dispatch('funcLogout');
 					//todo 跳转类似404错误页面，比较好
-					common.func_alert(err.message, 'error')					
+					common.func_alert(err.message, 'error')
 					next(`/login?redirect=${to.path}`)
 				})
 				//
