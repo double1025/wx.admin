@@ -106,7 +106,7 @@ export const constantRouterMap = [{
 		},
 		children: [{
 				path: 'prize',
-				component: () => import('@/views/common/common'),
+				component: () => import('@/views/common'),
 				name: '我的奖品',
 				meta: {
 					title: '我的奖品'
@@ -177,7 +177,7 @@ export const constantRouterMap = [{
 		},
 		children: [{
 				path: '/test_app',
-				component: () => import('@/views/common/common'),
+				component: () => import('@/views/common'),
 				name: '测试应用',
 				meta: {
 					title: '测试应用'

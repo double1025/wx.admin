@@ -80,8 +80,8 @@
 			}
 		},
 		mounted() {
-			this.$cc.func_set_vue(this)
-			page = this.$cc.func_get_vue()
+			this.g_cc.func_set_vue(this)
+			page = this.g_cc.func_get_vue()
 		},
 		methods: {
 			test() {

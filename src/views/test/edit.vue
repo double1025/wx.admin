@@ -23,7 +23,7 @@
 					</el-tab-pane>
 					<el-tab-pane label="其他配置">
 						<el-form-item label="选择日期-时间">
-							<el-date-picker v-model="form.date1" type="datetime" :picker-options="pickerOptions" placeholder="选择日期时间">
+							<el-date-picker v-model="form.date1" type="datetime" :picker-options="g_cc.picker_options" placeholder="选择日期时间">
 							</el-date-picker>
 						</el-form-item>
 						<el-form-item label="复选框">
@@ -49,7 +49,7 @@
 				<div class="save_wrap">
 					<el-button size="mini" type="success" @click="funcSave">保存</el-button>
 					<el-button size="mini" @click="funcBack">返回</el-button>&nbsp;&nbsp;
-					<el-checkbox label="保存后停留" name="xxx" />
+					<el-checkbox label="保存后停留" v-model="form.checked" />
 				</div>
 				<!---->
 			</el-form>
@@ -58,10 +58,11 @@
 </template>
 
 <script>
+	let page
 	export default {
 		data() {
 			return {
-				test: this.cc.isMobile,
+				test: this.g_cc.isMobile,
 				form: {
 					name: '',
 					sex: 0,
@@ -70,38 +71,15 @@
 					desc: '',
 					type: [],
 					num: 0,
+					checked: false,
 				},
 				form_rules: {},
 				form_rules_422: [],
-				pickerOptions: {
-					disabledDate(time) {
-						return time.getTime() > Date.now();
-					},
-					shortcuts: [{
-						text: '今天',
-						onClick(picker) {
-							picker.$emit('pick', new Date());
-						}
-					}, {
-						text: '昨天',
-						onClick(picker) {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24);
-							picker.$emit('pick', date);
-						}
-					}, {
-						text: '一周前',
-						onClick(picker) {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-							picker.$emit('pick', date);
-						}
-					}]
-				},
 			}
 		},
 		mounted() {
-			console.log(this.test)
+			this.g_cc.func_set_vue(this)
+			page = this.g_cc.func_get_vue()
 		},
 		methods: {
 			funcSave() {

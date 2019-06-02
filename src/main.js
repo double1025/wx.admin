@@ -27,8 +27,7 @@ import '../mock' // simulation data
 import common from '@/utils/common'
 
 
-Vue.prototype.$cc = common
-Vue.prototype.cc = common
+Vue.prototype.g_cc = common
 
 
 Vue.use(ElementUI)
