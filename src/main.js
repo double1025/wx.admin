@@ -25,9 +25,11 @@ import '@/permission' // permission control
 import '../mock' // simulation data
 
 import common from '@/utils/common'
+import p_data from '@/utils/commonPageData'
 
 
 Vue.prototype.g_cc = common
+Vue.prototype.p_data = p_data
 
 
 Vue.use(ElementUI)

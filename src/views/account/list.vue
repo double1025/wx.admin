@@ -1,10 +1,8 @@
 <template>
 	<el-container>
 		<el-header class='x-header'>
-			<b class="title">列表</b>
-			<el-button size="mini" icon="el-icon-back">返回</el-button>
+			<b class="title">账号管理</b>
 			<el-button size="mini" type="success" icon="el-icon-edit" @click="p_data.funcShowDialog">添加</el-button>
-			<el-button size="mini" type="primary" icon="el-icon-download">导出</el-button>
 			<el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
 			<el-button size="mini" icon="el-icon-refresh">刷新</el-button>
 		</el-header>
@@ -87,21 +85,24 @@
 			}
 		},
 		mounted() {
+			console.log('mounted')
+			//
 			this.g_cc.func_set_vue(this)
 			page = this.g_cc.func_get_vue()
 			//
-			page.pp.list_data = [{
-					'abc_id': '123',
-					'abc_name': '张三',
-					'abc_yn': 0,
-				},
-				{
-					'abc_id': '456',
-					'abc_name': '李四',
-					'abc_yn': 1,
-				},
-			]
-			page.pp.page_total = 2
+			page.p_data.funcGetList('');
+// 			page.pp.list_data = [{
+// 					'abc_id': '123',
+// 					'abc_name': '张三',
+// 					'abc_yn': 0,
+// 				},
+// 				{
+// 					'abc_id': '456',
+// 					'abc_name': '李四',
+// 					'abc_yn': 1,
+// 				},
+// 			]
+// 			page.pp.page_total = 2
 			//
 			page.pp.form_rules = {
 				abc_id: [{

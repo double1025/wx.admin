@@ -4,7 +4,10 @@ import common from '@/utils/common'
 const oa_user = {
 	state: {
 		token: null,
-		page_role: [], //权限页面
+		page_role: {
+			acc: {},
+			apps: null
+		}, //权限页面
 		page_vue: null, //页面的vue组件对象
 	},
 
@@ -58,18 +61,25 @@ const oa_user = {
 		}) {
 			console.log('funcLogout')
 			//
-			let data = {
-				token: '',
-				OA__acc_name: '',
-				OA__acc_role: '',
-			}
-			//删除cookie
-			for (let key in data) {
-				Cookies.remove(key)
-			}
-			//
-			state.token = null
-			commit('PageRole', [])
+			common.func_axios({
+				url: '/oa/logout',
+				data: {},
+				success: function(obj) {
+					let data = {
+						token: '',
+						OA__acc_name: '',
+						OA__acc_role: '',
+					}
+					//删除cookie
+					for (let key in data) {
+						Cookies.remove(key)
+					}
+					//
+					state.token = null
+					commit('PageRole', {})
+				}
+			})
+			//			
 		},
 		//
 	}

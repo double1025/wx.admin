@@ -121,8 +121,8 @@
 				let app_base64 = new Base64();
 				let pwd = app_base64.encode(page.form.password);
 				//
-				page.$cc.func_axios({
-					page: page,
+				page.g_cc.func_axios({
+					// page: page,
 					url: '/oa/login',
 					data: {
 						'username': page.form.username,
@@ -136,7 +136,7 @@
 							let login_data = obj.data.data.data
 							let token = login_data['token'];
 							if (!token) {
-								page.$cc.func_alert('参数异常', 'error')
+								page.g_cc.func_alert('参数异常', 'error')
 								return
 							}
 							//记录cookie	
@@ -144,13 +144,13 @@
 								Cookies.set(key, login_data[key])
 							}
 							//
-							page.$cc.func_alert('登陆成功')
+							page.g_cc.func_alert('登陆成功')
 							//跳转					
-							page.$cc.func_redirect('/dashboard', {
+							page.g_cc.func_redirect('/dashboard', {
 								__d: new Date().valueOf()
 							})
 						} else {
-							page.$cc.func_alert(obj.data.errmsg, 'error')
+							page.g_cc.func_alert(obj.data.errmsg, 'error')
 						}
 					}
 				})

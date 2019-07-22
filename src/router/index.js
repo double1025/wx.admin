@@ -42,18 +42,6 @@ export const constantRouterMap = [{
 		component: () => import('@/views/err/500'),
 		hidden: true
 	},
-
-	{
-		path: '/dashboard',
-		component: Layout,
-		redirect: '/dashboard',
-		name: 'Dashboard',
-		hidden: true,
-		children: [{
-			path: '/dashboard',
-			component: () => import('@/views/dashboard/index'),
-		}]
-	},
 	{
 		path: '/example',
 		component: Layout,
@@ -162,6 +150,61 @@ export const constantRouterMap = [{
 					}
 				]
 			},
+		]
+	},
+	////////
+	////////
+	////////
+	{
+		path: '/dashboard',
+		component: Layout,
+		redirect: '/dashboard',
+		name: 'Dashboard',
+		hidden: true,
+		children: [{
+			path: '/dashboard',
+			component: () => import('@/views/dashboard/index'),
+		}]
+	},
+	{
+		path: '/pwd',
+		component: Layout,
+		name: 'pwd',
+		hidden: true,
+		meta: {
+			title: '修改密码',
+			icon: 'form'
+		},
+		children: [{
+			path: '/pwd',
+			component: () => import('@/views/pwd/edit'),
+		}]
+	},
+	{
+		path: '/x_app_system',
+		component: Layout,
+		// name: '基础应用',
+		meta: {
+			title: '基础应用',
+			icon: 'form'
+		},
+		children: [{
+				path: '/account',
+				component: () => import('@/views/common'),
+				name: 'account',
+				meta: {
+					title: '账号管理'
+				},
+				children: [{
+						path: 'list',
+						component: () => import('@/views/account/list'),
+						meta: {
+							title: '账号管理'
+						}
+					}
+				]
+			},
+			////////
 		]
 	},
 	////////
