@@ -80,7 +80,7 @@
 			funcSaveMain() {
 				console.log('funcSaveMain')
 				page.g_cc.func_axios({
-					url: '/x_app_system/pwd/admin/pwd__edit',
+					url: '/pwd/admin/pwd__edit',
 					method: 'POST',
 					data: page.pp.form,
 					success: function(obj) {

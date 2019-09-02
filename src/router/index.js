@@ -177,7 +177,7 @@ export const constantRouterMap = [{
 		},
 		children: [{
 			path: '/pwd',
-			component: () => import('@/views/pwd/edit'),
+			component: () => import('@/views/app_system/pwd/edit'),
 		}]
 	},
 	{
@@ -197,7 +197,7 @@ export const constantRouterMap = [{
 				},
 				children: [{
 						path: 'list',
-						component: () => import('@/views/account/list'),
+						component: () => import('@/views/app_system/account/list'),
 						meta: {
 							title: '账号管理'
 						}

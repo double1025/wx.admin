@@ -39,7 +39,7 @@ const oa_user = {
 						console.log(obj)
 						if (obj.data.errcode == 0) {
 							console.log('获取用户权限：成功')
-							commit('PageRole', obj.data.data)
+							commit('PageRole', obj.data.return_data)
 							//
 							resolve(obj)
 						} else {
