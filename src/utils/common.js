@@ -46,7 +46,7 @@ const common = {
    * @param func_ok
    * @param func_cancel
    */
-  func_confirm: function (msg, func_ok, func_cancel)
+  func_confirm: function (msg, func_ok, func_cancel, type)
   {
     if (typeof (func_ok) == 'undefined')
     {
@@ -64,10 +64,15 @@ const common = {
         console.log(e);
       }
     }
+    if (typeof (type) == 'undefined')
+    {
+      type = 'warning';
+    }
+
     MessageBox({
       title: '提示',
       message: msg,
-      type: 'warning',
+      type: type,
       showCancelButton: true,
       confirmButtonText: '确定',
       cancelButtonText: '取消',

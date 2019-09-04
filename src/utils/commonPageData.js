@@ -205,7 +205,7 @@ const page_data = {
    */
   funcDel(api_url)
   {
-    common.func_confirm('确认吗', function ()
+    common.func_confirm('删除确认吗', function ()
     {
       let g_vue = common.func_get_vue();
       //
@@ -248,7 +248,7 @@ const page_data = {
           }
         }
       })
-    });
+    }, null, 'error');
   },
   //返回
   funcBack()
