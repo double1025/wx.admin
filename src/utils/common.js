@@ -180,7 +180,7 @@ common.func_axios = function (axios_data)
           let err = errs[key]
           let err_field = key
           //
-          let form_rules = g_vue.pp.form_rules[err_field]
+          let form_rules = g_vue.form_rules[err_field]
           // console.log(form_rules)
           if (form_rules)
           {
@@ -196,18 +196,18 @@ common.func_axios = function (axios_data)
           }
           else
           {
-            g_vue.pp.form_rules[err_field] = []
+            g_vue.form_rules[err_field] = []
           }
           //
-          g_vue.pp.form_rules_422[err_field] = false; //作用：不让错误出现第二次
+          g_vue.form_rules_422[err_field] = false; //作用：不让错误出现第二次
           //
           // debugger
-          g_vue.pp.form_rules[err_field].push({
+          g_vue.form_rules[err_field].push({
             validator: function (rule, value, callback)
             {
-              if (g_vue.pp.form_rules_422[err_field] == false)
+              if (g_vue.form_rules_422[err_field] == false)
               {
-                g_vue.pp.form_rules_422[err_field] = true;
+                g_vue.form_rules_422[err_field] = true;
                 // debugger
                 callback(new Error(err.errmsg));
               }
@@ -222,7 +222,7 @@ common.func_axios = function (axios_data)
           g_vue.$refs.form.validateField(err_field)
         }
         //
-        console.log(g_vue.pp.form_rules);
+        console.log(g_vue.form_rules);
         //
         common.func_alert('提交的数据不正确，请重新输入', 'error');
         //

@@ -25,21 +25,24 @@ import '@/permission' // permission control
 import '../mock' // simulation data
 
 import common from '@/utils/common'
-import p_data from '@/utils/commonPageData'
+import PageBase from '@/common/PageBase'
+import Page from '@/common/Page'
 
 
-Vue.prototype.g_cc = common
-Vue.prototype.p_data = p_data
+Vue.prototype.g_cc = common;
 
+//page
+Vue.prototype.p_page_base = new PageBase();
+Vue.prototype.g_page = new Page();
 
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
 let v = new Vue({
-	el: '#app',
-	router,
-	store,
-	render: h => h(App)
+  el: '#app',
+  router,
+  store,
+  render: h => h(App)
 })
 window.v = v

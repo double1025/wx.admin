@@ -2,24 +2,24 @@
   <el-container>
     <el-header class='x-header'>
       <b class="title">账号管理</b>
-      <el-button size="mini" type="success" icon="el-icon-edit" @click="p_data.funcShowDialog">添加</el-button>
+      <el-button size="mini" type="success" icon="el-icon-edit" @click="g_page.funcShowDialog">添加</el-button>
       <el-button size="mini" type="danger" icon="el-icon-delete"
-                 @click="p_data.funcDel('/account/admin/account__list/del')">删除
+                 @click="g_page.funcDel('/account/admin/account__list/del')">删除
       </el-button>
       <el-button size="mini" icon="el-icon-refresh" @click="g_cc.func_reload()">刷新</el-button>
     </el-header>
     <el-main class='x-main'>
-      <el-form :inline="true" :model="pp.form" size="mini">
+      <el-form :inline="true" :model="form" size="mini">
         <el-form-item label="名称">
-          <el-input name="compKw" v-model="pp.form.compKw" placeholder="名称"></el-input>
+          <el-input name="compKw" v-model="form.compKw" placeholder="名称"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="p_data.funcGetList">搜索</el-button>
+          <el-button type="primary" @click="g_page.funcGetList">搜索</el-button>
         </el-form-item>
       </el-form>
       <div class="table-wrap">
-        <el-table stripe ref="multipleTable" tooltip-effect="dark" @selection-change="p_data.funcTableSelectionChange"
-                  :data="pp.list_data">
+        <el-table stripe ref="multipleTable" tooltip-effect="dark" @selection-change="g_page.funcTableSelectionChange"
+                  :data="list_data">
           <el-table-column type="selection"></el-table-column>
           <el-table-column label="账号">
             <template slot-scope="data">
@@ -38,7 +38,7 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="data">
-              <el-button type="primary" size="mini" @click="p_data.funcShowDialog(data.row)">编辑</el-button>
+              <el-button type="primary" size="mini" @click="g_page.funcShowDialog(data.row)">编辑</el-button>
               <el-button type="warning" size="mini" @click="funcResetPwd(data.row)">重置密码</el-button>
             </template>
           </el-table-column>
@@ -50,33 +50,33 @@
     <!-- 分页 -->
     <el-footer>
       <el-pagination class="paging" background layout="total, prev, pager, next, jumper"
-                     @current-change="this.p_data.funcPageChange"
-                     :current-page="pp.page_current" :page-size="pp.page_size" :total="pp.page_total">
+                     @current-change="g_page.funcPageChange"
+                     :current-page="page_index" :page-size="page_size" :total="page_total">
       </el-pagination>
     </el-footer>
     <!---->
     <!---->
     <!-- 弹框 -->
-    <el-dialog title="编辑" :visible.sync="pp.form_dialog_visible" width="70%">
-      <el-form ref="form" :rules="pp.form_rules" :model="pp.form_dialog" size="mini" label-width="15%">
+    <el-dialog title="编辑" :visible.sync="form_dialog_visible" width="70%">
+      <el-form ref="form" :rules="form_rules" :model="form_dialog" size="mini" label-width="15%">
         <el-form-item label="账号" prop="acc_uid">
-          <el-input :disabled="pp.form_dialog_index!=-1" v-model="pp.form_dialog.acc_uid"/>
+          <el-input :disabled="form_dialog_index!=-1" v-model="form_dialog.acc_uid"/>
         </el-form-item>
         <el-form-item label="名称" prop="acc_name">
-          <el-input v-model="pp.form_dialog.acc_name"/>
+          <el-input v-model="form_dialog.acc_name"/>
         </el-form-item>
         <el-form-item label="身份" prop="acc_role">
-          <el-radio :disabled="true" v-model="pp.form_dialog.acc_role" label="user">超级管理员</el-radio>
-          <el-radio v-model="pp.form_dialog.acc_role" label="admin">管理员</el-radio>
+          <el-radio :disabled="true" v-model="form_dialog.acc_role" label="user">超级管理员</el-radio>
+          <el-radio v-model="form_dialog.acc_role" label="admin">管理员</el-radio>
         </el-form-item>
         <el-form-item label="停用" prop="acc_lock">
-          <el-radio v-model="pp.form_dialog.acc_lock" :label="1">是</el-radio>
-          <el-radio v-model="pp.form_dialog.acc_lock" :label="0">否</el-radio>
+          <el-radio v-model="form_dialog.acc_lock" :label="1">是</el-radio>
+          <el-radio v-model="form_dialog.acc_lock" :label="0">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="p_data.funcBack" size="mini">取消</el-button>
-        <el-button type="success" @click="p_data.funcSave" size="mini">保存</el-button>
+        <el-button @click="g_page.funcBack" size="mini">取消</el-button>
+        <el-button type="success" @click="g_page.funcSave" size="mini">保存</el-button>
       </div>
     </el-dialog>
     <!---->
@@ -85,35 +85,33 @@
   </el-container>
 </template>
 
+
 <script>
-    let page
     export default {
         data()
         {
-            return {
-                pp: this.p_data.data,
-            }
+            let page_data = {xxx: '123'};
+            page_data = Object.assign(page_data, this.p_page_base.page_data);
+            console.log(page_data);
+            return page_data;
         },
         mounted()
         {
             console.log('mounted')
             //
-            this.g_cc.func_set_vue(this)
-            page = this.g_cc.func_get_vue()
-            //
-            //应用ID
-            page.pp.app_id = 'account'
-            page.pp.api_func__list = '/account/admin/account__list'
-            page.pp.api_func__save = '/account/admin/account__list/save'
+            this.g_page.funcSetVue(this);
+            // 应用ID
+            this.g_page.funcSetApiUrlList('/account/admin/account__list');
+            this.g_page.funcSetApiUrlSave('/account/admin/account__list/save');
             //页码
-            // page.pp.page_size = 1
+            this.g_page.funcSetPageSize(10);
             //搜索
-            page.pp.form = {
-                'name': '123',
+            this.form = {
+                'compKw': '123',
             }
-            page.p_data.funcGetList()
+            this.g_page.funcGetList();
             //
-            page.pp.form_rules = {
+            this.form_rules = {
                 acc_uidX: [
                     {
                         required: true,
@@ -128,7 +126,7 @@
             funcSaveBefore(data)
             {
                 console.log('funcSaveBefore')
-                if (!page.p_data.funcIsAdminAdd())
+                if (!this.g_page.funcIsAdminAdd())
                 {
                     // delete data['acc_uid'];
                 }
@@ -141,7 +139,8 @@
              */
             funcResetPwd(row)
             {
-                console.log('funcResetPwd')
+                console.log('funcResetPwd');
+                let page = this;
                 page.g_cc.func_confirm('重置密码为123456，确认吗', function ()
                 {
                     page.g_cc.func_axios({
@@ -163,6 +162,7 @@
                     })
                 });
             }
+            ////////////////////
         }
     }
 </script>
