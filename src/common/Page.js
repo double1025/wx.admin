@@ -37,6 +37,10 @@ class Page
     this.g_vue = v;
     //将对象保存到vuex
     this.g_vue.g_cc.func_set_vue(v);
+    //重置某些数据
+    this.api_func__edit = '';
+    this.api_func__list = '';
+    this.api_func__save = '';
   }
 
   funcSetApiUrlList(url)

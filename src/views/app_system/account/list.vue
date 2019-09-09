@@ -107,7 +107,7 @@
             this.g_page.funcSetPageSize(10);
             //搜索
             this.form = {
-                'compKw': '123',
+                'compKw': '',
             }
             this.g_page.funcGetList();
             //
