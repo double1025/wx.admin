@@ -143,12 +143,12 @@
                     },
                     success: function (obj)
                     {
-                        // console.log(obj)
-                        if (obj.data.errcode == 0)
+                        console.log(obj)
+                        if (obj.errcode == 0)
                         {
                             //
                             // debugger
-                            let login_data = obj.data.return_data
+                            let login_data = obj.return_data
                             let token = login_data['token'];
                             if (!token)
                             {
@@ -171,7 +171,7 @@
                         }
                         else
                         {
-                            page.g_cc.func_alert(obj.data.errmsg, 'error')
+                            page.g_cc.func_alert(obj.errmsg, 'error')
                         }
                     }
                 })

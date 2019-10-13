@@ -38,6 +38,7 @@ const common = {
       message: msg,
       type: type,
       dangerouslyUseHTMLString: true,
+      showClose: false,
     }).then(func_ok)
   },
   /**
@@ -163,7 +164,16 @@ common.func_axios = function (axios_data)
   }
   //
   request(axios_data)
-    .then(axios_data.success)
+    .then(function (res)
+    {
+      if (typeof (res.data) != "undefined")
+      {
+        //返回参数优化，如：res.data.errcode 变 res.errcode
+        Object.assign(res, res.data);
+      }
+
+      axios_data.success(res);
+    })
     .catch(function (obj)
     {
       if (obj.response && obj.response.status == 422)

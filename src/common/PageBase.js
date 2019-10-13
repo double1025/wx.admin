@@ -12,12 +12,11 @@ class PageBase
   get page_data()
   {
     const data = {
-      form: {
+      form_q: {
         compKw: '',
       },
       form_dialog_index: 0, //操作项下标，-1表示添加，非-1编辑
-      form_dialog: {
-        compKw: '',
+      form: {
       },
       form_dialog_visible: false, //弹框显示隐藏
       form_rules: {}, //

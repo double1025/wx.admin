@@ -9,9 +9,9 @@
       <el-button size="mini" icon="el-icon-refresh" @click="g_cc.func_reload()">刷新</el-button>
     </el-header>
     <el-main class='x-main'>
-      <el-form :inline="true" :model="form" size="mini">
+      <el-form :inline="true" :model="form_q" size="mini">
         <el-form-item label="名称">
-          <el-input name="compKw" v-model="form.compKw" placeholder="名称"></el-input>
+          <el-input name="compKw" v-model="form_q.compKw" placeholder="名称"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="g_page.funcGetList">搜索</el-button>
@@ -23,7 +23,7 @@
           <el-table-column type="selection"></el-table-column>
           <el-table-column label="账号">
             <template slot-scope="data">
-              <div>{{data.row.acc_uid}}<span v-if="data.row.acc_lock==1" style="color: red;">[停用]</span></div>
+              <div>{{ super_uid }}@{{data.row.acc_uid}}<span v-if="data.row.acc_lock==1" style="color: red;">[停用]</span></div>
             </template>
           </el-table-column>
           <el-table-column label="名称">
@@ -58,20 +58,23 @@
     <!---->
     <!-- 弹框 -->
     <el-dialog title="编辑" :visible.sync="form_dialog_visible" width="70%">
-      <el-form ref="form" :rules="form_rules" :model="form_dialog" size="mini" label-width="15%">
-        <el-form-item label="账号" prop="acc_uid">
-          <el-input :disabled="form_dialog_index!=-1" v-model="form_dialog.acc_uid"/>
+      <el-form ref="form" :rules="form_rules" :model="form" size="mini" label-width="15%">
+        <el-form-item label="账号" prop="acc_uid" :disabled="g_page.funcIsAdminAdd()">
+          <el-input placeholder="请输入内容" v-model="form.acc_uid">
+            <template slot="prepend">{{ super_uid }}@</template>
+          </el-input>
+          <!--          <el-input :disabled="g_page.funcIsAdminAdd()" v-model="form.acc_uid"/>-->
         </el-form-item>
         <el-form-item label="名称" prop="acc_name">
-          <el-input v-model="form_dialog.acc_name"/>
+          <el-input v-model="form.acc_name"/>
         </el-form-item>
         <el-form-item label="身份" prop="acc_role">
-          <el-radio :disabled="true" v-model="form_dialog.acc_role" label="user">超级管理员</el-radio>
-          <el-radio v-model="form_dialog.acc_role" label="admin">管理员</el-radio>
+          <el-radio :disabled="true" v-model="form.acc_role" label="user">超级管理员</el-radio>
+          <el-radio v-model="form.acc_role" label="admin">管理员</el-radio>
         </el-form-item>
         <el-form-item label="停用" prop="acc_lock">
-          <el-radio v-model="form_dialog.acc_lock" :label="1">是</el-radio>
-          <el-radio v-model="form_dialog.acc_lock" :label="0">否</el-radio>
+          <el-radio v-model="form.acc_lock" :label="1">是</el-radio>
+          <el-radio v-model="form.acc_lock" :label="0">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -90,8 +93,9 @@
     export default {
         data()
         {
-            let page_data = {xxx: '123'};
+            let page_data = {super_uid: ''};
             page_data = Object.assign(page_data, this.p_page_base.page_data);
+            console.log('page_data');
             console.log(page_data);
             return page_data;
         },
@@ -106,7 +110,7 @@
             //页码
             this.g_page.funcSetPageSize(10);
             //搜索
-            this.form = {
+            this.form_q = {
                 'compKw': '',
             }
             this.g_page.funcGetList();
@@ -123,6 +127,11 @@
             //
         },
         methods: {
+            funcGetListCommonSuccessAfter(res)
+            {
+                console.log('funcGetListCommonSuccessAfter');
+                this.super_uid = res.data.return_data['super_uid'];
+            },
             funcSaveBefore(data)
             {
                 console.log('funcSaveBefore')

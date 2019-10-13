@@ -39,10 +39,9 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
-let v = new Vue({
+new Vue({
   el: '#app',
   router,
   store,
   render: h => h(App)
 })
-window.v = v

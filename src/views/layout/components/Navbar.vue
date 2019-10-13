@@ -4,7 +4,7 @@
 		<breadcrumb />
 		<el-dropdown class="avatar-container" trigger="click">
 			<div class="avatar-wrapper">
-				{{ page_role.acc.acc_name }}[{{ page_role.acc.acc_role }}]
+				{{ page_user.acc.acc_name }}[{{ page_user.acc.acc_role }}]
 				<i class="el-icon-caret-bottom" />
 			</div>
 			<el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -42,7 +42,7 @@
 			...mapGetters([
 				'sidebar',
 				'avatar',
-				'page_role',
+				'page_user',
 			])
 		},
 		methods: {

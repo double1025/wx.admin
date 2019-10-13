@@ -10,6 +10,7 @@ class Page
     this.funcSave = this.funcSave.bind(this);
     this.funcTableSelectionChange = this.funcTableSelectionChange.bind(this);
     this.funcPageChange = this.funcPageChange.bind(this);
+    this.funcIsAdminAdd = this.funcIsAdminAdd.bind(this);
   }
 
   funcTest()
@@ -73,6 +74,7 @@ class Page
    */
   funcGetPageIndex()
   {
+    console.log('funcGetPageIndex');
     let page_index = 1;
     if (this.g_vue.page_index)
     {
@@ -119,7 +121,7 @@ class Page
       return;
     }
 
-    let query_data = this.g_vue.form;
+    let query_data = this.g_vue.form_q;
     //
     query_data.page_index = this.funcGetPageIndex();
     query_data.page_size = this.funcGetPageSize();
@@ -142,14 +144,20 @@ class Page
    */
   funcGetListCommon__success(res)
   {
+    let g_vue = this.g_vue;
     if (res.data.errcode == 0)
     {
-      this.g_vue.list_data = res.data.return_data['list'];
-      this.g_vue.page_total = res.data.return_data['count']
+      g_vue.list_data = res.data.return_data['list'];
+      g_vue.page_total = res.data.return_data['count']
+
+      if (typeof (g_vue.funcGetListCommonSuccessAfter) != "undefined")
+      {
+        g_vue.funcGetListCommonSuccessAfter(res);
+      }
     }
     else
     {
-      this.g_vue.g_cc.func_alert(res.data.errmsg, 'error')
+      g_vue.g_cc.func_alert(res.data.errmsg, 'error')
     }
   }
 
@@ -192,6 +200,11 @@ class Page
    */
   funcIsAdminAdd()
   {
+    if (!this.g_vue)
+    {
+      return false;
+    }
+
     return this.g_vue.form_dialog_index == -1
   }
 
@@ -212,13 +225,13 @@ class Page
     }
     //
     g_vue.form_dialog_index = -1; //-1表示添加，非-1编辑
-    g_vue.form_dialog = {};
+    g_vue.form = {};
     if (row)
     {
       //记录坐标
       g_vue.form_dialog_index = g_vue.list_data.indexOf(row);
       //复制对象
-      g_vue.form_dialog = Object.assign({}, row)
+      g_vue.form = Object.assign({}, row)
     }
     console.log('坐标=' + g_vue.form_dialog_index);
     //
@@ -272,7 +285,7 @@ class Page
     let g_vue = this.g_vue;
     let page = this;
     //
-    let data = Object.assign({}, g_vue.form_dialog);
+    let data = Object.assign({}, g_vue.form);
     if (typeof (g_vue.funcSaveBefore) != "undefined")
     {
       //g_vue.pp.form_dialog

@@ -4,6 +4,6 @@ const getters = {
 	//oa_user
 	token: state => state.oa_user.token,
 	page_vue: state => state.oa_user.page_vue,
-	page_role: state => state.oa_user.page_role,
+	page_user: state => state.oa_user.page_user,
 }
 export default getters

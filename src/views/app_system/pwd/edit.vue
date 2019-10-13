@@ -1,29 +1,29 @@
 <template>
   <el-container>
     <el-main class='x-main-edit'>
-      <el-form ref="form" :model="pp.form" :rules="pp.form_rules" size="mini" label-width="15%">
+      <el-form ref="form" :model="form" :rules="form_rules" size="mini" label-width="15%">
         <el-tabs type="border-card">
           <el-tab-pane label="修改密码">
             <el-form-item label="原密码" prop="old_pwd">
               <el-col :span="6">
-                <el-input v-model="pp.form.old_pwd" type='password'/>
+                <el-input v-model="form.old_pwd" type='password'/>
               </el-col>
             </el-form-item>
             <el-form-item label="新密码" prop="new_pwd">
               <el-col :span="6">
-                <el-input v-model="pp.form.new_pwd" type='password'/>
+                <el-input v-model="form.new_pwd" type='password'/>
               </el-col>
             </el-form-item>
             <el-form-item label="新密码确认" prop="__new_pwd">
               <el-col :span="6">
-                <el-input v-model="pp.form.__new_pwd" type='password'/>
+                <el-input v-model="form.__new_pwd" type='password'/>
               </el-col>
             </el-form-item>
           </el-tab-pane>
         </el-tabs>
         <!-- 按钮部分 -->
         <div class="save_wrap">
-          <el-button size="mini" type="success" @click="funcSave">保存</el-button>
+          <el-button type="success" @click="g_page.funcSave" size="mini">保存</el-button>
         </div>
         <!---->
       </el-form>
@@ -32,21 +32,21 @@
 </template>
 
 <script>
-    let page
     export default {
         data()
         {
-            return {
-                pp: this.p_data.data,
-            }
+            let page_data = {};
+            page_data = Object.assign(page_data, this.p_page_base.page_data);
+            return page_data;
         },
         mounted()
         {
-            this.g_cc.func_set_vue(this);
-            page = this.g_cc.func_get_vue();
+            this.g_page.funcSetVue(this);
             //
+            this.g_page.funcSetApiUrlSave('/pwd/admin/pwd__edit');
+            let page = this;
             //验证
-            page.pp.form_rules = {
+            this.form_rules = {
                 old_pwd: [{
                     required: true,
                     message: '请输入原密码',
@@ -60,7 +60,7 @@
                 __new_pwd: [{
                     validator: function (rule, value, callback)
                     {
-                        if (value !== page.pp.form.new_pwd)
+                        if (value !== page.form.new_pwd)
                         {
                             callback(new Error('两次输入密码不一致!'));
                         }
@@ -74,49 +74,17 @@
             }
         },
         methods: {
-            funcSave()
+            funcSave__success(res)
             {
-                console.log('funcSave')
-                //
-                page.$refs.form.validate(valid =>
+                if (res.data.errcode == 0)
                 {
-                    if (valid)
-                    {
-                        console.log('ok')
-                        page.funcSaveMain()
-                    }
-                    else
-                    {
-                        console.log('error submit!!')
-                        return false
-                    }
-                })
-                //
-            },
-            funcSaveMain()
-            {
-                console.log('funcSaveMain')
-                page.g_cc.func_axios({
-                    url: '/pwd/admin/pwd__edit',
-                    method: 'POST',
-                    data: page.pp.form,
-                    success: function (obj)
-                    {
-                        if (obj.data.errcode == 0)
-                        {
-                            page.g_cc.func_alert('修改成功')
-                        }
-                        else
-                        {
-                            page.g_cc.func_alert(obj.data.errmsg, 'error')
-                        }
-                    }
-                })
-            },
-            funcBack()
-            {
-                console.log('funcBack')
-            },
+                    this.g_cc.func_alert('修改成功')
+                }
+                else
+                {
+                    this.g_cc.func_alert(res.data.errmsg, 'error')
+                }
+            }
         }
     }
 </script>
