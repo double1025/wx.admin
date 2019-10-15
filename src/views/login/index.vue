@@ -20,7 +20,7 @@
       </el-form-item>
       <el-form-item prop="code" v-if="show_code">
         <el-input v-model="form.code" placeholder="验证码" style="width: 50%;"/>
-        <div style="float:left;" @click.native.prevent="func_reload_vcode">
+        <div style="float:left;" @click="funcReloadVcode">
           <img style="height: 40px;padding-top: 12px;" :src='vcode'/>
         </div>
       </el-form-item>
@@ -50,7 +50,8 @@
             return {
                 form: {
                     username: '',
-                    password: ''
+                    password: '',
+                    code: '',
                 },
                 form_rules: {
                     username: [{
@@ -140,10 +141,10 @@
                     data: {
                         'username': page.form.username,
                         'password': pwd,
+                        'code': page.form.code,
                     },
                     success: function (obj)
                     {
-                        console.log(obj)
                         if (obj.errcode == 0)
                         {
                             //
@@ -171,6 +172,14 @@
                         }
                         else
                         {
+                            if (obj.return_data && obj.return_data.show_code)
+                            {
+                                page.show_code = obj.return_data.show_code;
+                                if (page.show_code)
+                                {
+                                    page.funcReloadVcode();
+                                }
+                            }
                             page.g_cc.func_alert(obj.errmsg, 'error')
                         }
                     }
@@ -178,12 +187,12 @@
                 //
             },
             //刷新验证码
-            func_reload_vcode()
+            funcReloadVcode()
             {
                 // process.env.BASE_API
                 console.log('func_reload_vcode')
                 page.vcode = ''
-                page.vcode = process.env.BASE_API + '/admin/login/vcode?v=' + (new Date()).valueOf()
+                page.vcode = process.env.BASE_API + '/oa/login/vcode?v=' + (new Date()).valueOf()
                 //
             }
         }
