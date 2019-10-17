@@ -63,21 +63,18 @@ const oa_user = {
                   });
                 }
 
+                if (v.children.length <= 0)
+                {
+                  return false;
+                }
+
                 return true;
               });
+              console.log(routers)
 
-              let r = routers.concat([
-                {
-                  path: '*',
-                  redirect: '/404',
-                  hidden: true
-                }
-              ]);
-
-              console.log(r);
               let page_user = {
                 'acc': obj.return_data.acc,
-                'routes': r,
+                'routes': routers,
               };
               commit('PageUser', page_user);
               //

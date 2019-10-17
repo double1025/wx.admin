@@ -39,6 +39,7 @@ const common = {
       type: type,
       dangerouslyUseHTMLString: true,
       showClose: false,
+      closeOnClickModal: false,
     }).then(func_ok)
   },
   /**

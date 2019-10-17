@@ -37,16 +37,12 @@ router.beforeEach((to, from, next) =>
         //获取权限
         store.dispatch('funcGetPageRole').then(res =>
         {
-          console.log('page_user');
-          // console.log(store.getters.page_user.routes);
-          // router.addRoutes(store.getters.page_user.routes);
+          console.log("合并固定路由");
+          let r = router.options.routes;
+          r = r.concat(store.getters.page_user.routes);
+          router.options.routes = r;
           router.addRoutes(asyncRouterMap);
-          // router.push({
-          //   path: '*',
-          //   redirect: '/404',
-          //   hidden: true
-          // });
-          console.log(router.options.routes);
+
           next({...to, replace: true});
           //
         }).catch((err) =>

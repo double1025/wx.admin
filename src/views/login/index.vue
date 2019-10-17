@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="form" :model="form" :rules="form_rules" class="login-form" auto-complete="on" label-position="left">
-      <h3 class="title">微信公众平台</h3>
+      <h3 class="title">{{ title }}</h3>
       <el-form-item prop="username">
 				<span class="svg-container">
 					<svg-icon icon-class="user"/>
@@ -81,6 +81,12 @@
                 },
                 immediate: true
             }
+        },
+        computed: {
+            title()
+            {
+                return process.env.TITLE;
+            },
         },
         mounted()
         {

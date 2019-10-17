@@ -11,6 +11,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
+    import {asyncRouterMap} from '@/router/index';
 
     let page
     export default {
@@ -28,7 +29,9 @@
         methods: {
             testAddRoute()
             {
-                console.log(this.$route);
+                console.log(this.$router);
+                // this.$router.addRoutes(asyncRouterMap);
+                this.$router.options.routes = asyncRouterMap;
             },
             test()
             {

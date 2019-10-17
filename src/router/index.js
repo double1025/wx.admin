@@ -114,11 +114,11 @@ export const constantRouterMap = [
     hidden: true
   },
   //要放最后面
-  // {
-  //   path: '*',
-  //   redirect: '/404',
-  //   hidden: true
-  // },
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  },
 ]
 
 //由后端控制路由
@@ -148,13 +148,6 @@ export const asyncRouterMap = [
               title: '账号管理'
             }
           },
-          {
-            path: 'test',
-            component: () => import('@/views/app_system/account/list'),
-            meta: {
-              title: '账号测试'
-            }
-          }
         ]
       },
       ////////
