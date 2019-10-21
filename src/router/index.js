@@ -72,6 +72,7 @@ export const constantRouterMap = [
       title: '测试',
       icon: 'form'
     },
+    hidden: true,
     children: [
       {
         path: '/test_app',
@@ -113,16 +114,12 @@ export const constantRouterMap = [
     component: () => import('@/views/err/404'),
     hidden: true
   },
-  //要放最后面
-  {
-    path: '*',
-    redirect: '/404',
-    hidden: true
-  },
 ]
 
 //由后端控制路由
 export const asyncRouterMap = [
+  ////////
+  ////////
   ////////
   {
     path: '/x_app_system',
@@ -134,30 +131,85 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: '/account',
-        component: () => import('@/views/common'),
+        path: '/account/list',
         name: 'account',
         meta: {
           title: '账号管理'
         },
-        children: [
-          {
-            path: 'list',
-            component: () => import('@/views/app_system/account/list'),
-            meta: {
-              title: '账号管理'
-            }
-          },
-        ]
+        component: () => import('@/views/app_system/account/list'),
       },
       ////////
     ]
+  },
+  ////////
+  ////////
+  ////////
+  {
+    path: '/msg',
+    component: Layout,
+    meta: {
+      title: '消息管理',
+      icon: 'form'
+    },
+    children: [
+      {
+        path: '/dialog/list',
+        name: 'reply',
+        meta: {
+          title: '对话监控'
+        },
+        component: () => import('@/views/app/reply/list'),
+      },
+      {
+        path: '/reply/list',
+        name: 'reply',
+        meta: {
+          title: '回复设置'
+        },
+        component: () => import('@/views/app/reply/list'),
+      }
+    ]
+  },
+  ////////
+  ////////
+  ////////
+  {
+    path: '/helper',
+    component: Layout,
+    meta: {
+      title: '小帮手',
+      icon: 'form'
+    },
+    children: [
+      {
+        path: '/cashbook/list',
+        name: 'reply',
+        meta: {
+          title: '记帐本'
+        },
+        component: () => import('@/views/app/reply/list'),
+      },
+      {
+        path: '/menu/list',
+        name: 'reply',
+        meta: {
+          title: '智能菜单'
+        },
+        component: () => import('@/views/app/reply/list'),
+      }
+    ]
+  },
+  //要放最后面
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
   },
 ];
 
 
 export default new Router({
-  mode: 'history', //后端支持可开
+  // mode: 'history', //后端支持可开
   // scrollBehavior: () => ({
   //   y: 0
   // }),

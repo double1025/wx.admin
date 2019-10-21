@@ -13,6 +13,11 @@
             首页
           </el-dropdown-item>
         </router-link>
+        <router-link class="inlineBlock" to="/edit">
+          <el-dropdown-item>
+            设置
+          </el-dropdown-item>
+        </router-link>
         <router-link class="inlineBlock" to="/pwd">
           <el-dropdown-item>
             修改密码

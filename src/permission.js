@@ -15,6 +15,7 @@ router.beforeEach((to, from, next) =>
   console.log('router-BEGIN')
   NProgress.start()
   //
+  // debugger
   console.log('from:' + from.path)
   console.log('to:' + to.path)
   //
@@ -41,6 +42,7 @@ router.beforeEach((to, from, next) =>
           let r = router.options.routes;
           r = r.concat(store.getters.page_user.routes);
           router.options.routes = r;
+          console.log(router.options.routes);
           router.addRoutes(asyncRouterMap);
 
           next({...to, replace: true});

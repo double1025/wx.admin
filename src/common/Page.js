@@ -3,6 +3,7 @@ class Page
   constructor()
   {
     //绑定方法this为page对象
+    this.funcEdit = this.funcEdit.bind(this);
     this.funcShowDialog = this.funcShowDialog.bind(this);
     this.funcGetList = this.funcGetList.bind(this);
     this.funcBack = this.funcBack.bind(this);
@@ -42,6 +43,7 @@ class Page
     this.api_func__edit = '';
     this.api_func__list = '';
     this.api_func__save = '';
+    this.api_func__del = '';
   }
 
   funcSetApiUrlList(url)
@@ -58,6 +60,12 @@ class Page
   {
     this.api_func__edit = url;
   }
+
+  funcSetApiUrlDel(url)
+  {
+    this.api_func__del = url;
+  }
+
 
   /**
    * 设置当前页
@@ -212,28 +220,66 @@ class Page
    * 显示编辑弹框
    * @param row
    */
+  funcEdit(row)
+  {
+    console.log('funcEdit');
+    // console.log(row);
+    //
+    //
+    this.g_vue.form_dialog_index = -1; //-1表示添加，非-1编辑
+    this.g_vue.form = {};
+    if (row)
+    {
+      //记录坐标
+      this.g_vue.form_dialog_index = this.g_vue.list_data.indexOf(row);
+    }
+    console.log('坐标=' + this.g_vue.form_dialog_index);
+    //
+    if (!this.api_func__edit)
+    {
+      this.funcShowDialog(row);
+    }
+    else
+    {
+      console.log(this.funcIsAdminAdd());
+      let data = {id: ''};
+      if (!this.funcIsAdminAdd())
+      {
+        if (!row.id)
+        {
+          console.error('id is null');
+        }
+
+        data = {id: row.id};
+      }
+      //
+      let page = this;
+      this.g_cc.func_axios({
+        url: this.api_func__edit,
+        data: data,
+        success: function (res)
+        {
+          row = Object.assign(row, res.return_data);
+          console.log(row);
+          page.funcShowDialog(row);
+        }
+      })
+    }
+    //
+  }
+
   funcShowDialog(row)
   {
     console.log('funcShowDialog');
     console.log(row);
     //
     let g_vue = this.g_vue;
-    // console.log(g_vue.$refs.form)
+    //复制对象
+    this.g_vue.form = Object.assign({}, row);
     if (g_vue.$refs.form)
     {
       g_vue.$refs.form.clearValidate();
     }
-    //
-    g_vue.form_dialog_index = -1; //-1表示添加，非-1编辑
-    g_vue.form = {};
-    if (row)
-    {
-      //记录坐标
-      g_vue.form_dialog_index = g_vue.list_data.indexOf(row);
-      //复制对象
-      g_vue.form = Object.assign({}, row)
-    }
-    console.log('坐标=' + g_vue.form_dialog_index);
     //
     //显示加工方法
     if (typeof (g_vue.funcShowDialogAfter) != "undefined")
@@ -244,6 +290,7 @@ class Page
     g_vue.form_dialog_visible = true;
     //
   }
+
 
   /**
    * 保存之前，前端验证
@@ -335,8 +382,16 @@ class Page
    * 删除
    * @param api_url *api链接
    */
-  funcDel(api_url)
+  funcDel()
   {
+    if (!this.api_func__del)
+    {
+      const errmsg = '请设置del请求url，提示：funcSetApiUrlDel';
+      console.error(errmsg);
+      this.g_cc.func_alert(errmsg, 'error');
+      return;
+    }
+
     let page = this;
     let g_vue = page.g_vue;
     g_vue.g_cc.func_confirm('删除确认吗', function ()
@@ -353,7 +408,7 @@ class Page
       //
       g_vue.g_cc.func_axios({
         method: 'post',
-        url: api_url,
+        url: page.api_func__del,
         data: {
           ids: ids,
         },
