@@ -68,6 +68,9 @@
         <el-form-item label="是否领取" prop="abc_yn">
           <el-input v-model="form.abc_yn"/>
         </el-form-item>
+        <el-form-item label="test" prop="test">
+          <upload-imgs ref="uploadEle" :sortable="true" :max-num="8" :value="imgs" :remote-fuc="funcUpdateImg"/>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="g_page.funcBack" size="mini">取消</el-button>
@@ -82,11 +85,31 @@
 
 <script>
   import {asyncRouterMap} from '@/router/index';
+  import UploadImgs from "@/components/upload-imgs";
 
   export default {
+    components: {
+      UploadImgs
+    },
     data()
     {
-      let page_data = {test: ''};
+      let page_data = {
+        test: '',
+        imgs: [
+          {
+            id: '12d3',
+            display: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
+            src: '/images/index/Lin_cms_%E5%B0%81%E9%9D%A2.png',
+            imgId: '238287',
+          },
+          {
+            id: '12d5',
+            display: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
+            src: '/images/index/Lin_cms_%E5%B0%81%E9%9D%A2.png',
+            imgId: '238288',
+          },
+        ]
+      };
       page_data = Object.assign(page_data, this.p_page_base.page_data);
 
       return page_data;
@@ -118,13 +141,21 @@
       //
     },
     methods: {
+      funcUpdateImg(file, func)
+      {
+        console.log('funcUpdateImg');
+        console.log(file);
+
+        let img = {
+          id: '123',
+          url: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
+        };
+        return func(img);
+        //
+      },
       funcTest()
       {
-        console.log(this.g_router);
-        this.g_router.addRoutes(asyncRouterMap);
-
-        console.log(asyncRouterMap);
-        console.log(this.g_router.options);
+        console.log(this.imgs);
       },
     }
   }
