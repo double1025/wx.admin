@@ -49,7 +49,8 @@ const oa_user = {
               let apps = obj.return_data.apps;
               const routers = asyncRouterMap.filter(v =>
               {
-                if (v.children && v.children.length > 0)
+                let is_pass = false;
+                if (typeof (v.children) != "undefined" && v.children.length > 0)
                 {
                   // console.log(v.children)
                   v.children = v.children.filter(child =>
@@ -61,16 +62,16 @@ const oa_user = {
                     }
                     return false;
                   });
+
+                  if (v.children.length > 0)
+                  {
+                    is_pass = true;
+                  }
                 }
 
-                if (v.children.length <= 0)
-                {
-                  return false;
-                }
-
-                return true;
+                return is_pass;
               });
-              console.log(routers)
+              // console.log(routers)
 
               let page_user = {
                 'acc': obj.return_data.acc,
