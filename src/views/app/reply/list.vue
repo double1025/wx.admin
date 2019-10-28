@@ -72,7 +72,8 @@
           <el-input v-model="form.reply_title"/>
         </el-form-item>
         <el-form-item v-show="isMsg()" label="图文-图片" prop="reply_pic">
-          <el-input v-model="form.reply_pic"/>
+          <upload-imgs ref="uploadEle" :sortable="true" :max-num="8" :value="form.reply_pic"
+                       :remote-fuc="funcUpdateImg"/>
         </el-form-item>
         <el-form-item :label="isMsg()?'图文-描述':'回复内容'" prop="reply_desc">
           <el-input type="textarea" :rows="5" v-model="form.reply_desc"/>
@@ -98,7 +99,12 @@
 
 
 <script>
+    import UploadImgs from "@/components/upload-imgs";
+
     export default {
+        components: {
+            UploadImgs
+        },
         data()
         {
             let page_data = {super_uid: ''};
@@ -140,6 +146,18 @@
             isMsg()
             {
                 return this.form.reply_type == 'msg';
+            },
+            funcUpdateImg(file, func)
+            {
+                console.log('funcUpdateImg');
+                console.log(file);
+
+                let img = {
+                    id: '123',
+                    url: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
+                };
+                return func(img);
+                //
             },
             ////////////////////
         }

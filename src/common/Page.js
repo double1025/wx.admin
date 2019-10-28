@@ -448,6 +448,39 @@ class Page
     //
     this.g_vue.form_dialog_visible = false
   }
+
+  /**
+   * 图片上传
+   * @param file
+   * @param func
+   */
+  funcUpdateImg(file, func)
+  {
+    console.log('funcUpdateImg');
+    //
+    let f = new FormData();
+    f.append('file0', file);
+    //
+    let page = this;
+    page.g_cc.func_axios({
+      url: '/test/web_0/test/upload_img',
+      method: 'post',
+      data: f,
+      success: function (res)
+      {
+        if (res.data.errcode == 0)
+        {
+          // page.g_cc.func_alert('密码重置成功');
+          func(res.data.img);
+        }
+        else
+        {
+          func(false);
+          page.g_cc.func_alert(res.data.errmsg, 'error');
+        }
+      }
+    });
+  }
 }
 
 export default Page;

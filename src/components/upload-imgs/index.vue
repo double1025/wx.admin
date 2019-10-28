@@ -432,11 +432,15 @@ export default {
      * @param {Array} uploadList 需要上传的缓存集合, 集合中包含回调函数
      */
     uploadCatch(uploadList) {
+        console.log('uploadCatch');
+        console.log(uploadList);
       const data = {}
       uploadList.forEach((item, index) => {
         data[`file_${index}`] = item.img.file
       })
-      return this.$axios({
+        console.log(data);
+      // return this.$axios({
+        return this.g_cc.func_axios({
         method: 'post',
         url: '/cms/file',
         data,
@@ -476,6 +480,8 @@ export default {
      * @param {Function} cb 回调函数
      */
     originUpload(img, cb) {
+        console.log('originUpload');
+        console.log(img);
       // 并且一次最多上传文件数量设为可配置
       // 添加缓存
       catchData.push({
@@ -706,7 +712,9 @@ export default {
       } else {
         // element 原生粗糙模式
         this.$confirm(`<img src="${data.display}" style="width: 100%;" />`, '预览', {
-          dangerouslyUseHTMLString: true,
+            dangerouslyUseHTMLString: true,
+            showCancelButton:false,
+            showClose:false,
         })
       }
     },

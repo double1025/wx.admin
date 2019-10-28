@@ -69,7 +69,7 @@
           <el-input v-model="form.abc_yn"/>
         </el-form-item>
         <el-form-item label="test" prop="test">
-          <upload-imgs ref="uploadEle" :sortable="true" :max-num="8" :value="imgs" :remote-fuc="funcUpdateImg"/>
+          <upload-imgs ref="upload_img" :sortable="true" :max-num="8" :value="imgs" :remote-fuc="funcUpdateImg"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -84,79 +84,140 @@
 </template>
 
 <script>
-  import {asyncRouterMap} from '@/router/index';
-  import UploadImgs from "@/components/upload-imgs";
+    import {asyncRouterMap} from '@/router/index';
+    import UploadImgs from "@/components/upload-imgs";
 
-  export default {
-    components: {
-      UploadImgs
-    },
-    data()
-    {
-      let page_data = {
-        test: '',
-        imgs: [
-          {
-            id: '12d3',
-            display: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
-            src: '/images/index/Lin_cms_%E5%B0%81%E9%9D%A2.png',
-            imgId: '238287',
-          },
-          {
-            id: '12d5',
-            display: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
-            src: '/images/index/Lin_cms_%E5%B0%81%E9%9D%A2.png',
-            imgId: '238288',
-          },
-        ]
-      };
-      page_data = Object.assign(page_data, this.p_page_base.page_data);
-
-      return page_data;
-    },
-    mounted()
-    {
-      this.g_page.funcSetVue(this);
-      //
-      this.list_data = [{
-        'abc_id': '123',
-        'abc_name': '张三',
-        'abc_yn': 0,
-      },
-        {
-          'abc_id': '456',
-          'abc_name': '李四',
-          'abc_yn': 1,
+    export default {
+        components: {
+            UploadImgs
         },
-      ]
-      this.page_total = 2
-      //
-      this.form_rules = {
-        abc_id: [{
-          required: true,
-          message: '必填',
-          trigger: 'blur'
-        },],
-      }
-      //
-    },
-    methods: {
-      funcUpdateImg(file, func)
-      {
-        console.log('funcUpdateImg');
-        console.log(file);
+        data()
+        {
+            let page_data = {
+                test: '',
+                imgs: [
+                    {
+                        id: '12d3',
+                        display: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
+                        src: '/images/index/Lin_cms_%E5%B0%81%E9%9D%A2.png',
+                        imgId: '238287',
+                    },
+                    {
+                        id: '12d5',
+                        display: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
+                        src: '/images/index/Lin_cms_%E5%B0%81%E9%9D%A2.png',
+                        imgId: '238288',
+                    },
+                ]
+            };
+            page_data = Object.assign(page_data, this.p_page_base.page_data);
 
-        let img = {
-          id: '123',
-          url: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
-        };
-        return func(img);
-        //
-      },
-      funcTest()
-      {
-        console.log(this.imgs);
-      },
+            return page_data;
+        },
+        mounted()
+        {
+            this.g_page.funcSetVue(this);
+            //
+            this.list_data = [{
+                'abc_id': '123',
+                'abc_name': '张三',
+                'abc_yn': 0,
+            },
+                {
+                    'abc_id': '456',
+                    'abc_name': '李四',
+                    'abc_yn': 1,
+                },
+            ]
+            this.page_total = 2
+            //
+            this.form_rules = {
+                abc_id: [{
+                    required: true,
+                    message: '必填',
+                    trigger: 'blur'
+                },],
+            }
+            //
+        },
+        methods: {
+            funcUpdateImg(file, func)
+            {
+                // func(false);
+                // let v = this.getValue();
+                // v.then(data =>
+                // {
+                //     console.log(data);
+                // });
+                // return;
+                console.log('funcUpdateImg');
+                console.log(file);
+                //
+                // let x = URL.createObjectURL(file.raw);
+                // console.log(x);
+                //
+                let f = new FormData();
+                f.append('file0', file);
+
+                let page = this;
+                page.g_cc.func_axios({
+                    url: '/test/web_0/test/upload_img',
+                    method: 'post',
+                    data: f,
+                    success: function (res)
+                    {
+                        if (res.data.errcode == 0)
+                        {
+                            // page.g_cc.func_alert('密码重置成功');
+                            func(res.data.img);
+                        }
+                        else
+                        {
+                            func(false);
+                            page.g_cc.func_alert(res.data.errmsg, 'error');
+                        }
+                    }
+                });
+                // let img = {
+                //     id: '123',
+                //     url: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
+                // };
+                //
+                // setTimeout(() =>
+                // {
+                //     func(img);
+                //
+                //
+                // }, 3000)
+                //
+            },
+            funcTest()
+            {
+                // getValue().then(data => {
+                //     console.log(data);
+                // })
+                let x = this.getValue()
+                x.then(data =>
+                {
+                    console.log(data);
+                });
+            },
+            async getValue(name)
+            {
+                let v = await this.$refs['upload_img'].getValue();
+                // console.log(v);
+                return v;
+
+                // console.log(this.$refs['upload_img']);
+                console.log(await this.$refs['upload_img'].getValue())
+                // eslint-disable-next-line
+                // alert('已获取数据, 打印在控制台中')
+                setTimeout(() =>
+                {
+                    console.log('3');
+                }, 1000)
+                console.log('2');
+            },
+        }
     }
-  }
 </script>

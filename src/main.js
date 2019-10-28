@@ -27,7 +27,9 @@ import '../mock' // simulation data
 import common from '@/utils/common'
 import PageBase from '@/common/PageBase'
 import Page from '@/common/Page'
+import GlobalComponents from "@/components/GlobalComponents";
 
+console.log(GlobalComponents);
 
 Vue.prototype.g_cc = common;
 
@@ -36,6 +38,7 @@ Vue.prototype.p_page_base = new PageBase();
 Vue.prototype.g_page = new Page();
 
 Vue.use(ElementUI)
+Vue.use(GlobalComponents)
 
 Vue.config.productionTip = false
 
