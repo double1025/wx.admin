@@ -48,29 +48,6 @@ service.interceptors.request.use(
       return;
     }
     //
-    if (typeof (request.method) == "undefined")
-    {
-      request.method = 'get';
-    }
-    //
-    request.responseType = "json";
-    //
-    if (typeof (request.data) == "undefined")
-    {
-      request.data = {};
-    }
-    // token
-    let token = common.func_get_token()
-    if (token)
-    {
-      request.data['token'] = token
-    }
-    //
-    if (typeof (request.data.__d) == "undefined")
-    {
-      request.data.__d = (new Date()).valueOf();
-    }
-    //
     if (request.method.toLowerCase() == 'get')
     {
       request.params = request.data;

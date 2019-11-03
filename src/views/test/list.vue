@@ -68,8 +68,19 @@
         <el-form-item label="是否领取" prop="abc_yn">
           <el-input v-model="form.abc_yn"/>
         </el-form-item>
+        <el-form-item label="1页" prop="test1">
+          <x-upload-imgs ref="upload_img1" :sortable="true"
+                       :max-num="1"
+                       v-bind:value.sync="imgs1"
+                       :remote-fuc="g_page.funcUpdateImg"
+                       :before-upload="g_page.funcUpdateImgBefore"/>
+        </el-form-item>
         <el-form-item label="test" prop="test">
-          <upload-imgs ref="upload_img" :sortable="true" :max-num="8" :value="imgs" :remote-fuc="funcUpdateImg"/>
+          <x-upload-imgs ref="upload_img" :sortable="true"
+                       :max-num="8"
+                       v-bind:value.sync="imgs"
+                       :remote-fuc="funcUpdateImg"
+                       :before-upload="funcUpdateImgBefore"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -85,16 +96,13 @@
 
 <script>
     import {asyncRouterMap} from '@/router/index';
-    import UploadImgs from "@/components/upload-imgs";
 
     export default {
-        components: {
-            UploadImgs
-        },
         data()
         {
             let page_data = {
                 test: '',
+                imgs1: [],
                 imgs: [
                     {
                         id: '12d3',
@@ -141,20 +149,41 @@
             //
         },
         methods: {
+            funcTestUploadImg(file, func)
+            {
+                console.log('funcTestUploadImg');
+                // setTimeout(() =>
+                // {
+                //     func(false);
+                // }, 2000)
+                func({
+                    id: '123',
+                    url: 'http://dev.koa.7yue.pro/assets/2019/06/30/abc823a9-5ef4-48e1-bdf6-dd4f0ab92482.jpg',
+                })
+            },
+            funcXVal(val)
+            {
+                console.log('funcXVal');
+                console.log(val);
+            },
+            //
+            async funcUpdateImgBefore(file)
+            {
+                console.log('funcUpdateImgBefore');
+                console.log(file);
+
+                // const max_mb = this.g_cc.oneKB * 100;
+                // if (file.size > max_mb)
+                // {
+                //     return this.g_cc.func_alert('文件大小不能超过2M', 'error');
+                // }
+
+                return file;
+            },
             funcUpdateImg(file, func)
             {
-                // func(false);
-                // let v = this.getValue();
-                // v.then(data =>
-                // {
-                //     console.log(data);
-                // });
-                // return;
                 console.log('funcUpdateImg');
                 console.log(file);
-                //
-                // let x = URL.createObjectURL(file.raw);
-                // console.log(x);
                 //
                 let f = new FormData();
                 f.append('file0', file);
@@ -166,41 +195,32 @@
                     data: f,
                     success: function (res)
                     {
-                        if (res.data.errcode == 0)
+                        console.log('funcUpdateImg：success');
+                        if (res.errcode == 0)
                         {
                             // page.g_cc.func_alert('密码重置成功');
-                            func(res.data.img);
+                            // func(false);
+                            console.log(res.return_data.img);
+                            func(res.return_data.img);
                         }
                         else
                         {
                             func(false);
-                            page.g_cc.func_alert(res.data.errmsg, 'error');
+                            page.g_cc.func_alert(res.errmsg, 'error');
                         }
                     }
                 });
-                // let img = {
-                //     id: '123',
-                //     url: 'http://img0.test.xiao-bo.com/_upload/_site/xiaoqin/201910/5da95d7c7900b-38c4-9836-100ef2ff8357.jpg',
-                // };
-                //
-                // setTimeout(() =>
-                // {
-                //     func(img);
-                //
-                //
-                // }, 3000)
-                //
             },
             funcTest()
             {
-                // getValue().then(data => {
-                //     console.log(data);
-                // })
+                // this.$refs['upload_img'].clear();
+
                 let x = this.getValue()
                 x.then(data =>
                 {
                     console.log(data);
                 });
+                console.log(this.imgs);
             },
             async getValue(name)
             {

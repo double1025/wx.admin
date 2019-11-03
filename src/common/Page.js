@@ -12,6 +12,8 @@ class Page
     this.funcTableSelectionChange = this.funcTableSelectionChange.bind(this);
     this.funcPageChange = this.funcPageChange.bind(this);
     this.funcIsAdminAdd = this.funcIsAdminAdd.bind(this);
+    this.funcUpdateImg = this.funcUpdateImg.bind(this);
+    this.funcUpdateImgBefore = this.funcUpdateImgBefore.bind(this);
   }
 
   funcTest()
@@ -155,8 +157,10 @@ class Page
     let g_vue = this.g_vue;
     if (res.data.errcode == 0)
     {
-      g_vue.list_data = res.data.return_data['list'];
-      g_vue.page_total = res.data.return_data['count']
+      g_vue.page_info = res.return_data['page_info'];
+      g_vue.list_data = res.return_data['list'];
+      g_vue.page_total = res.return_data['count']
+      console.log('list_data', g_vue.list_data);
 
       if (typeof (g_vue.funcGetListCommonSuccessAfter) != "undefined")
       {
@@ -450,6 +454,32 @@ class Page
   }
 
   /**
+   * 上传图片func，
+   * 返回说明，false:不通过；file:通过；
+   *
+   * @param file
+   * @returns {Promise<*>}
+   */
+  async funcUpdateImgBefore(file)
+  {
+    console.log('funcUpdateImgBefore');
+    console.log(file);
+    //
+    let max_mb = this.g_cc.oneMB * 2;
+    // max_mb = this.g_cc.oneKB * 10;
+    if (file.size > max_mb)
+    {
+      const errmsg = '文件大小不能超过2M';
+      console.error(errmsg);
+      console.error(`file_size=${file.size}、max=${max_mb}`);
+      this.g_cc.func_alert(errmsg, 'error');
+      return false;
+    }
+
+    return file;
+  }
+
+  /**
    * 图片上传
    * @param file
    * @param func
@@ -458,29 +488,69 @@ class Page
   {
     console.log('funcUpdateImg');
     //
-    let f = new FormData();
-    f.append('file0', file);
-    //
     let page = this;
     page.g_cc.func_axios({
-      url: '/test/web_0/test/upload_img',
+      url: '/a_common/admin/file/uploadImg',
       method: 'post',
-      data: f,
+      data: {
+        file0: file,
+      },
       success: function (res)
       {
-        if (res.data.errcode == 0)
+        console.log('funcUpdateImg:success');
+        if (res.errcode == 0)
         {
-          // page.g_cc.func_alert('密码重置成功');
-          func(res.data.img);
+          console.log(res.return_data.img);
+          func(res.return_data.img);
         }
         else
         {
           func(false);
-          page.g_cc.func_alert(res.data.errmsg, 'error');
+          page.g_cc.func_alert(res.errmsg, 'error');
         }
+      },
+      error: function (res)
+      {
+        console.log('funcUpdateImg:error');
+        var errmsg = res.message;
+        page.g_cc.func_alert(errmsg, 'error');
+        //
+        func(false);
       }
     });
   }
+
+  /**
+   * 获取上传图片控件值，转成保存字符串
+   * @param imgs
+   * @returns {string}
+   */
+  funcImgArrToStr(imgs)
+  {
+    if (imgs.length <= 0)
+    {
+      return '';
+    }
+
+    let str = '';
+    imgs.forEach((item, index) =>
+    {
+      if (str == '')
+      {
+        str = item.imgId;
+      }
+      else
+      {
+        str += `,${item.imgId}`;
+      }
+    })
+
+    return str;
+  }
+
+  ////////////////////
+  ////////////////////
+  ////////////////////
 }
 
 export default Page;

@@ -112,7 +112,13 @@ const common = {
   },
 }
 
-common.isMobile = common.isAndroid || common.isIDevice
+/**
+ * 是手机
+ * @type {boolean}
+ */
+common.isMobile = common.isAndroid || common.isIDevice;
+common.oneKB = 1024;
+common.oneMB = common.oneKB * 1024;
 
 //设置页面的vue组件对象
 common.func_set_vue = function (page_vue)
@@ -150,6 +156,45 @@ common.func_get_token = function ()
 //axios
 common.func_axios = function (axios_data)
 {
+  //method
+  if (typeof (axios_data.method) == "undefined")
+  {
+    axios_data.method = 'get';
+  }
+
+  if (typeof (axios_data.responseType) == "undefined")
+  {
+    axios_data.responseType = 'json';
+  }
+
+  if (typeof (axios_data.data) == "undefined")
+  {
+    axios_data.data = {};
+  }
+  // token
+  let token = common.func_get_token()
+  if (token)
+  {
+    axios_data.data['token'] = token
+  }
+  //
+  if (typeof (axios_data.data.__d) == "undefined")
+  {
+    axios_data.data.__d = (new Date()).valueOf();
+  }
+
+  //post参数特殊处理
+  if (axios_data.method.toLowerCase() == 'post')
+  {
+    let f = new FormData();
+    for (let k in axios_data.data)
+    {
+      f.append(k, axios_data.data[k]);
+    }
+
+    axios_data.data = f;
+  }
+
   //自定义error事件
   if (typeof (axios_data.error) == "undefined")
   {

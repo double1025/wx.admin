@@ -149,7 +149,7 @@ export const asyncRouterMap = [
     component: Layout,
     meta: {
       title: '消息管理',
-      icon: 'form'
+      icon: 'link'
     },
     children: [
       {
@@ -178,16 +178,16 @@ export const asyncRouterMap = [
     component: Layout,
     meta: {
       title: '小帮手',
-      icon: 'form'
+      icon: 'user'
     },
     children: [
       {
         path: '/cashbook/list',
-        name: 'reply',
+        name: 'cashbook',
         meta: {
           title: '记帐本'
         },
-        component: () => import('@/views/app/reply/list'),
+        component: () => import('@/views/app/cashbook/list'),
       },
       {
         path: '/menu/list',
@@ -209,7 +209,7 @@ export const asyncRouterMap = [
 
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  mode: 'history', //后端支持可开
   // scrollBehavior: () => ({
   //   y: 0
   // }),

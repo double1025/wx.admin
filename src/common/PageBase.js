@@ -12,12 +12,12 @@ class PageBase
   get page_data()
   {
     const data = {
+      page_info: {}, //页面信息，如页面标题
       form_q: {
         compKw: '',
       },
       form_dialog_index: 0, //操作项下标，-1表示添加，非-1编辑
-      form: {
-      },
+      form: {},
       form_dialog_visible: false, //弹框显示隐藏
       form_rules: {}, //
       form_rules_422: [],
