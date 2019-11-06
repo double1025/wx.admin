@@ -693,7 +693,7 @@ todo: 文件判断使用 serveWorker 优化性能
                         }
                     })
 
-                    console.log('result',result);
+                    console.log('result', result);
                     reduceResult(item, result)
                     if (!result)
                     {
@@ -853,11 +853,14 @@ todo: 文件判断使用 serveWorker 优化性能
                 else
                 {
                     // element 原生粗糙模式
-                    this.$confirm(`<img src="${data.display}" style="width: 100%;" />`, '预览', {
+                    this.$confirm(`<a href="${data.display}" target="_blank"><img src="${data.display}" style="width: 100%;" /></a>`, '预览', {
                         dangerouslyUseHTMLString: true,
                         showCancelButton: false,
-                        showClose: false,
-                    })
+                        showConfirmButton: false,
+                        showClose: true,
+                    }).catch(() =>
+                    {
+                    });
                 }
             },
             /**

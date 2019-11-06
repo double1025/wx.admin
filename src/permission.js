@@ -4,6 +4,7 @@ import common from '@/utils/common'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import {asyncRouterMap} from '@/router/index';
+import Cookies from "js-cookie";
 
 NProgress.configure({
   showSpinner: false
@@ -50,12 +51,12 @@ router.beforeEach((to, from, next) =>
         }).catch((err) =>
         {
           console.log(err)
-          store.dispatch('funcLogout');
-          //todo 跳转类似404错误页面，比较好
-          common.func_alert(err.message, 'error', function ()
+          setTimeout(function ()
           {
-            next(`/login?redirect=${to.path}`)
-          })
+            Cookies.remove('token');
+            location.href = `/login?redirect=${to.path}`;
+          }, 100);
+          // next(`/login?redirect=${to.path}`);
         })
         //
       }

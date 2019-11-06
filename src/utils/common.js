@@ -8,6 +8,7 @@ import request from '@/utils/request'
 import store from '../store'
 import router from '../router'
 import de from "element-ui/src/locale/lang/de";
+import Cookies from "js-cookie";
 
 
 const common = {
@@ -218,7 +219,32 @@ common.func_axios = function (axios_data)
         Object.assign(res, res.data);
       }
 
-      axios_data.success(res);
+      if (res.errcode == -555 || res.errcode == -556)
+      {
+        console.error('登陆异常', res.errcode);
+        let errmsg = res.errmsg;
+        //
+        let g_vue = common.func_get_vue();
+        g_vue.$store.dispatch('funcLogout').then(res =>
+        {
+          common.func_alert(errmsg, 'error', function ()
+          {
+            setTimeout(function ()
+            {
+              location.href = `/login?redirect=${g_vue.$route.path}`;
+            }, 100);
+          })
+          //
+        }).catch((err) =>
+        {
+          console.log(err)
+        });
+        //
+      }
+      else
+      {
+        axios_data.success(res);
+      }
     })
     .catch(function (obj)
     {
@@ -280,7 +306,12 @@ common.func_axios = function (axios_data)
         //
         console.log(g_vue.form_rules);
         //
-        common.func_alert('提交的数据不正确，请重新输入', 'error');
+        let errmsg = '提交的数据不正确，请重新输入';
+        if (obj.response.data.errmsg)
+        {
+          errmsg = obj.response.data.errmsg;
+        }
+        common.func_alert(errmsg, 'error');
         //
       }
       else

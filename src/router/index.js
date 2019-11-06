@@ -54,7 +54,6 @@ export const constantRouterMap = [
     hidden: true,
     meta: {
       title: '修改密码',
-      icon: 'form'
     },
     children: [{
       path: '/pwd',
@@ -122,14 +121,46 @@ export const asyncRouterMap = [
   ////////
   ////////
   {
+    path: '/setting',
+    component: Layout,
+    name: 'setting',
+    hidden: true,
+    meta: {
+      title: '设置',
+    },
+    children: [{
+      path: '/setting',
+      name: 'setting',
+      component: () => import('@/views/app_system/setting/edit'),
+    }]
+  },
+  ////////
+  {
     path: '/x_app_system',
     component: Layout,
     // name: '基础应用',
     meta: {
       title: '基础应用',
-      icon: 'form'
+      icon: 'user'
     },
     children: [
+      {
+        path: '/app_admin/list',
+        name: 'app_admin',
+        meta: {
+          title: '应用管理'
+        },
+        component: () => import('@/views/app_system/app_admin/list'),
+      },
+      {
+        path: '/app_admin/edit',
+        name: 'app_admin',
+        hidden: true,
+        meta: {
+          title: '应用配置'
+        },
+        component: () => import('@/views/app_system/app_admin/edit'),
+      },
       {
         path: '/account/list',
         name: 'account',
@@ -167,7 +198,7 @@ export const asyncRouterMap = [
           title: '回复设置'
         },
         component: () => import('@/views/app/reply/list'),
-      }
+      },
     ]
   },
   ////////

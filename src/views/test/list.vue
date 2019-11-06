@@ -70,17 +70,17 @@
         </el-form-item>
         <el-form-item label="1页" prop="test1">
           <x-upload-imgs ref="upload_img1" :sortable="true"
-                       :max-num="1"
-                       v-bind:value.sync="imgs1"
-                       :remote-fuc="g_page.funcUpdateImg"
-                       :before-upload="g_page.funcUpdateImgBefore"/>
+                         :max-num="1"
+                         v-bind:value.sync="imgs1"
+                         :remote-fuc="g_page.funcUpdateImg"
+                         :before-upload="g_page.funcUpdateImgBefore"/>
         </el-form-item>
         <el-form-item label="test" prop="test">
           <x-upload-imgs ref="upload_img" :sortable="true"
-                       :max-num="8"
-                       v-bind:value.sync="imgs"
-                       :remote-fuc="funcUpdateImg"
-                       :before-upload="funcUpdateImgBefore"/>
+                         :max-num="8"
+                         v-bind:value.sync="imgs"
+                         :remote-fuc="funcUpdateImg"
+                         :before-upload="funcUpdateImgBefore"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

@@ -14,6 +14,7 @@ class Page
     this.funcIsAdminAdd = this.funcIsAdminAdd.bind(this);
     this.funcUpdateImg = this.funcUpdateImg.bind(this);
     this.funcUpdateImgBefore = this.funcUpdateImgBefore.bind(this);
+    this.funcRedirectAppEdit = this.funcRedirectAppEdit.bind(this);
   }
 
   funcTest()
@@ -127,7 +128,7 @@ class Page
     {
       const errmsg = '请设置list请求url，提示：funcSetApiUrlList()';
       console.error(errmsg);
-      this.g_cc.func_alert(errmsg, 'error');
+      // this.g_cc.func_alert(errmsg, 'error');
       return;
     }
 
@@ -217,6 +218,11 @@ class Page
       return false;
     }
 
+    if (this.g_vue.$route.query.id)
+    {
+      return false;
+    }
+
     return this.g_vue.form_dialog_index == -1
   }
 
@@ -238,6 +244,7 @@ class Page
       this.g_vue.form_dialog_index = this.g_vue.list_data.indexOf(row);
     }
     console.log('坐标=' + this.g_vue.form_dialog_index);
+    console.log(this.funcIsAdminAdd());
     //
     if (!this.api_func__edit)
     {
@@ -245,17 +252,15 @@ class Page
     }
     else
     {
-      console.log(this.funcIsAdminAdd());
-      let data = {id: ''};
       if (!this.funcIsAdminAdd())
       {
         if (!row.id)
         {
           console.error('id is null');
         }
-
-        data = {id: row.id};
       }
+      let data = {};
+      data = Object.assign(row, data);
       //
       let page = this;
       this.g_cc.func_axios({
@@ -263,8 +268,10 @@ class Page
         data: data,
         success: function (res)
         {
+          row = {};
           row = Object.assign(row, res.return_data);
-          console.log(row);
+          page.g_vue.page_info = res.return_data['page_info'];
+          console.log('funcEdit:success', row);
           page.funcShowDialog(row);
         }
       })
@@ -368,13 +375,30 @@ class Page
    */
   funcSave__success(res)
   {
-    let g_vue = this.g_vue;
+    let page = this;
+    let g_vue = page.g_vue;
     //
-    if (res.data.errcode == 0)
+    if (res.errcode == 0)
     {
-      //更新列表信息
-      this.funcGetList();
-      g_vue.form_dialog_visible = false;
+      let errmsg = '保存成功';
+      if (res.errmsg)
+      {
+        errmsg = res.errmsg;
+      }
+
+      g_vue.g_cc.func_alert(errmsg, 'success', function ()
+      {
+        if (g_vue.checked)
+        {
+          console.log('保存后停留');
+          return;
+        }
+        //走back逻辑
+        page.funcBack();
+
+        //更新列表信息
+        page.funcGetList();
+      });
     }
     else
     {
@@ -450,7 +474,14 @@ class Page
   {
     console.log('funcBack');
     //
-    this.g_vue.form_dialog_visible = false
+    if (typeof (this.g_vue.funcBack) != "undefined")
+    {
+      this.g_vue.funcBack();
+    }
+    else
+    {
+      this.g_vue.form_dialog_visible = false
+    }
   }
 
   /**
@@ -546,6 +577,25 @@ class Page
     })
 
     return str;
+  }
+
+  /**
+   * 跳转到应用配置
+   * @param key
+   */
+  funcRedirectAppEdit(key)
+  {
+    console.log('funcRedirectAppEdit', this.g_vue.$route.name);
+    let data = {
+      id: this.g_vue.$route.name,
+      callback_url: this.g_vue.$route.path,
+    };
+    if (typeof (key) != "undefined")
+    {
+      data.key = key;
+    }
+
+    this.g_cc.func_redirect('/app_admin/edit', data);
   }
 
   ////////////////////

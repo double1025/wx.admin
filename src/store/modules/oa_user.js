@@ -99,28 +99,38 @@ const oa_user = {
     funcLogout({commit, state})
     {
       console.log('funcLogout')
-      //
-      common.func_axios({
-        url: '/oa/logout',
-        data: {},
-        success: function (obj)
-        {
-          let data = {
-            token: '',
-            OA__acc_name: '',
-            OA__acc_role: '',
-          }
-          //删除cookie
-          for (let key in data)
+      return new Promise((resolve, reject) =>
+      {
+        common.func_axios({
+          url: '/oa/logout',
+          data: {},
+          success: function (obj)
           {
-            Cookies.remove(key)
+            let data = {
+              token: '',
+              OA__acc_name: '',
+              OA__acc_role: '',
+            }
+            //删除cookie
+            for (let key in data)
+            {
+              Cookies.remove(key)
+            }
+            //
+            state.token = null
+            commit('PageUser', {})
+
+            let page_user = {
+              acc: null,
+              routes: [],
+            };
+            commit('PageUser', page_user);
+
+            resolve(obj);
           }
-          //
-          state.token = null
-          commit('PageUser', {})
-        }
-      })
-      //
+        })
+        //
+      });
     },
     //
   }

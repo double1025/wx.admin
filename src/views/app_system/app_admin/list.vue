@@ -1,11 +1,7 @@
 <template>
   <el-container>
     <el-header class='x-header'>
-      <b class="title">回复列表</b>
-      <el-button size="mini" type="success" icon="el-icon-edit" @click="g_page.funcEdit">添加</el-button>
-      <el-button size="mini" type="danger" icon="el-icon-delete"
-                 @click="g_page.funcDel()">删除
-      </el-button>
+      <b class="title">{{ page_info.title }}</b>
       <el-button size="mini" icon="el-icon-refresh" @click="g_cc.func_reload()">刷新</el-button>
     </el-header>
     <el-main class='x-main'>
@@ -21,27 +17,23 @@
         <el-table stripe ref="multipleTable" tooltip-effect="dark" @selection-change="g_page.funcTableSelectionChange"
                   :data="list_data">
           <el-table-column type="selection"></el-table-column>
-          <el-table-column label="KEY">
+          <el-table-column label="APPID">
             <template slot-scope="data">
-              {{ data.row.reply_key }}
+              {{data.row.app_id}}
             </template>
           </el-table-column>
           <el-table-column label="名称">
             <template slot-scope="data">
-              {{ data.row.reply_name }}
-            </template>
-          </el-table-column>
-          <el-table-column label="类型">
-            <template slot-scope="data">
-              {{ data.row.type }}
+              <div v-html="data.row.app_name"></div>
             </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="data">
-              <el-button type="primary" size="mini" @click="g_page.funcEdit(data.row)">编辑</el-button>
+              <el-button type="primary" size="mini" @click="funcEdit(data.row)">应用配置</el-button>
             </template>
           </el-table-column>
         </el-table>
+        <a target="_blank"></a>
       </div>
     </el-main>
     <!---->
@@ -56,36 +48,10 @@
     <!---->
     <!---->
     <!-- 弹框 -->
-    <el-dialog title="编辑" :visible.sync="form_dialog_visible" width="70%">
+    <el-dialog :title="form.app_idx+'配置'" :visible.sync="form_dialog_visible" width="70%">
       <el-form ref="form" :rules="form_rules" :model="form" size="mini" label-width="15%">
-        <el-form-item label="KEY" prop="reply_key">
-          <el-input v-model="form.reply_key"/>
-        </el-form-item>
-        <el-form-item label="名称" prop="reply_name">
-          <el-input v-model="form.reply_name"/>
-        </el-form-item>
-        <el-form-item label="类型" prop="reply_type">
-          <el-radio v-model="form.reply_type" label="text">文本回复</el-radio>
-          <el-radio v-model="form.reply_type" label="msg">图文回复</el-radio>
-        </el-form-item>
-        <el-form-item v-show="isMsg()" label="图文-标题" prop="reply_title">
-          <el-input v-model="form.reply_title"/>
-        </el-form-item>
-        <el-form-item v-show="isMsg()" label="图文-图片" prop="reply_pic">
-          <x-upload-imgs ref="uploadEle" :sortable="true" :max-num="1"
-                         v-bind:value.sync="form.reply_pic_imgs"
-                         :remote-fuc="g_page.funcUpdateImg"
-                         :before-upload="g_page.funcUpdateImgBefore"/>
-        </el-form-item>
-        <el-form-item :label="isMsg()?'图文-描述':'回复内容'" prop="reply_desc">
-          <el-input type="textarea" :rows="5" v-model="form.reply_desc"/>
-        </el-form-item>
-        <el-form-item v-show="isMsg()" label="跳转方式" prop="reply_redirect_type">
-          <el-radio v-model="form.reply_redirect_type" label="">键跳转</el-radio>
-          <el-radio v-model="form.reply_redirect_type" label="url">链接跳转</el-radio>
-        </el-form-item>
-        <el-form-item v-show="isMsg()" label="跳转-内容" prop="reply_redirect">
-          <el-input v-model="form.reply_redirect"/>
+        <el-form-item label="入口链接" v-if="!g_page.funcIsAdminAdd()">
+          <el-input :disabled="true" v-model="form.oauth_url"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -106,8 +72,6 @@
         {
             let page_data = {super_uid: ''};
             page_data = Object.assign(page_data, this.p_page_base.page_data);
-            console.log('page_data');
-            console.log(page_data);
             return page_data;
         },
         mounted()
@@ -116,10 +80,8 @@
             //
             this.g_page.funcSetVue(this);
             // 应用ID
-            this.g_page.funcSetApiUrlList('/reply/admin/reply');
-            this.g_page.funcSetApiUrlEdit('/reply/admin/reply/edit')
-            this.g_page.funcSetApiUrlSave('/reply/admin/reply/save');
-            this.g_page.funcSetApiUrlDel('/reply/admin/reply/del');
+            this.g_page.funcSetApiUrlList('/app_admin/admin/app_admin');
+            this.g_page.funcSetApiUrlSave('/app_admin/admin/app_admin/save');
             //页码
             this.g_page.funcSetPageSize(10);
             //搜索
@@ -140,6 +102,13 @@
             //
         },
         methods: {
+            funcEdit(row)
+            {
+                this.g_cc.func_redirect('/app_admin/edit', {
+                    id: row.id,
+                    callback_url: '/app_admin/list',
+                })
+            },
             funcSaveBefore(data)
             {
                 console.log('funcSaveBefore', data)
@@ -147,10 +116,6 @@
                 data.reply_pic = this.g_page.funcImgArrToStr(data.reply_pic_imgs);
 
                 return data;
-            },
-            isMsg()
-            {
-                return this.form.reply_type == 'msg';
             },
             ////////////////////
         }

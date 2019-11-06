@@ -13,7 +13,7 @@
             首页
           </el-dropdown-item>
         </router-link>
-        <router-link class="inlineBlock" to="/edit">
+        <router-link v-if="acc_role=='super_admin'" class="inlineBlock" to="/setting">
           <el-dropdown-item>
             设置
           </el-dropdown-item>
@@ -32,58 +32,64 @@
 </template>
 
 <script>
-  import {
-    mapGetters
-  } from 'vuex'
-  import Breadcrumb from '@/components/Breadcrumb'
-  import Hamburger from '@/components/Hamburger'
+    import {
+        mapGetters
+    } from 'vuex'
+    import Breadcrumb from '@/components/Breadcrumb'
+    import Hamburger from '@/components/Hamburger'
 
-  export default {
-    components: {
-      Breadcrumb,
-      Hamburger
-    },
-    computed: {
-      ...mapGetters([
-        'sidebar',
-        'avatar',
-        'page_user',
-      ]),
-      acc_name()
-      {
-        if (this.page_user.acc == null)
-        {
-          return '';
+    export default {
+        components: {
+            Breadcrumb,
+            Hamburger
+        },
+        computed: {
+            ...mapGetters([
+                'sidebar',
+                'avatar',
+                'page_user',
+            ]),
+            acc_name()
+            {
+                if (this.page_user.acc == null)
+                {
+                    return '';
+                }
+
+                return this.page_user.acc.acc_name;
+            },
+            acc_role()
+            {
+                if (this.page_user.acc == null)
+                {
+                    return '';
+                }
+
+                return this.page_user.acc.acc_role;
+            }
+        },
+        methods: {
+            toggleSideBar()
+            {
+                this.$store.dispatch('ToggleSideBar')
+            },
+            logout()
+            {
+                this.$store.dispatch('funcLogout').then(res =>
+                {
+                    setTimeout(function ()
+                    {
+                        location.href = '/login' // 为了重新实例化vue-router对象 避免bug
+                    }, 100);
+                })
+                //
+                // this.$router.push({
+                //   path: '/login',
+                // })
+                // location.href = '/login' // 为了重新实例化vue-router对象 避免bug
+            }
         }
-
-        return this.page_user.acc.acc_name;
-      },
-      acc_role()
-      {
-        if (this.page_user.acc == null)
-        {
-          return '';
-        }
-
-        return this.page_user.acc.acc_role;
-      }
-    },
-    methods: {
-      toggleSideBar()
-      {
-        this.$store.dispatch('ToggleSideBar')
-      },
-      logout()
-      {
-        this.$store.dispatch('funcLogout')
-        //
-        this.$router.push({
-          path: '/login',
-        })
-        // location.href = '/' // 为了重新实例化vue-router对象 避免bug
-      }
     }
-  }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

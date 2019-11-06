@@ -1,7 +1,12 @@
 <template>
   <el-container>
     <el-header class='x-header'>
-      <b class="title">{{ page_info.title }}</b>
+      <div class="title">
+        <b>
+          {{ page_info.title }}
+        </b>
+        <el-button size="mini" icon="el-icon-s-tools" type="primary" plain @click="g_page.funcRedirectAppEdit()"></el-button>
+      </div>
       <el-button size="mini" type="danger" icon="el-icon-delete"
                  @click="g_page.funcDel()">删除
       </el-button>
