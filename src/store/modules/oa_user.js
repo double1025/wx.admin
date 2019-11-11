@@ -4,7 +4,6 @@ import {asyncRouterMap} from '@/router/index';
 
 const oa_user = {
   state: {
-    token: null,
     page_vue: null, //页面的vue组件对象
     //用户信息
     page_user: {
@@ -21,11 +20,6 @@ const oa_user = {
     PageVue: (state, page_vue) =>
     {
       state.page_vue = page_vue
-    },
-    Token: (state) =>
-    {
-      let token = Cookies.get('token')
-      state.token = token
     }
   },
   //
@@ -106,16 +100,8 @@ const oa_user = {
           data: {},
           success: function (obj)
           {
-            let data = {
-              token: '',
-              OA__acc_name: '',
-              OA__acc_role: '',
-            }
             //删除cookie
-            for (let key in data)
-            {
-              Cookies.remove(key)
-            }
+            Cookies.remove('token');
             //
             state.token = null
             commit('PageUser', {})

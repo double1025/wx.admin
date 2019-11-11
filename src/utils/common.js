@@ -143,16 +143,7 @@ common.func_redirect = function (path, query)
 //获取token
 common.func_get_token = function ()
 {
-  if (store.getters.token)
-  {
-    //pass
-  }
-  else
-  {
-    store.commit('Token')
-  }
-  //
-  return store.getters.token;
+  return Cookies.get('token');
 }
 //axios
 common.func_axios = function (axios_data)

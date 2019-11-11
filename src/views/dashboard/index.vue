@@ -37,7 +37,7 @@
             {
                 page.g_cc.func_axios({
                     page: page,
-                    url: '/oa/center/init',
+                    url: '/test/web_0/test',
                     data: {},
                     success: function (obj)
                     {
