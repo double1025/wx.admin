@@ -5,10 +5,14 @@ class Page
     //绑定方法this为page对象
     this.funcEdit = this.funcEdit.bind(this);
     this.funcShowDialog = this.funcShowDialog.bind(this);
+    this.funcSearch = this.funcSearch.bind(this);
     this.funcGetList = this.funcGetList.bind(this);
+
     this.funcBack = this.funcBack.bind(this);
     this.funcDel = this.funcDel.bind(this);
+    this.funcExport = this.funcExport.bind(this);
     this.funcSave = this.funcSave.bind(this);
+
     this.funcTableSelectionChange = this.funcTableSelectionChange.bind(this);
     this.funcPageChange = this.funcPageChange.bind(this);
     this.funcIsAdminAdd = this.funcIsAdminAdd.bind(this);
@@ -117,6 +121,16 @@ class Page
     }
 
     return page_size;
+  }
+
+  /**
+   * 搜索
+   */
+  funcSearch()
+  {
+    this.funcSetPageIndex(1);
+
+    this.funcGetList();
   }
 
   /**
@@ -482,6 +496,23 @@ class Page
     {
       this.g_vue.form_dialog_visible = false
     }
+  }
+
+  funcExport(api_url)
+  {
+    console.log('funcExport');
+    //
+    let query = '';
+    let data = Object.assign({}, this.g_vue.form_q);
+    for (let key in data)
+    {
+      let val = data[key];
+      query += `&${key}=${val}`;
+    }
+    //
+    let url = process.env.BASE_API + `${api_url}?__export__=1${query}`;
+    console.log(url);
+    location.href = url;
   }
 
   /**

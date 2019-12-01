@@ -7,9 +7,8 @@
         </b>
         <el-button size="mini" icon="el-icon-s-tools" type="primary" plain @click="g_page.funcRedirectAppEdit()"></el-button>
       </div>
-      <el-button size="mini" type="danger" icon="el-icon-delete"
-                 @click="g_page.funcDel()">删除
-      </el-button>
+      <el-button size="mini" type="primary" icon="el-icon-download" @click="g_page.funcExport('/cashbook/admin/cashbook/export')">导出</el-button>
+      <el-button size="mini" type="danger" icon="el-icon-delete"@click="g_page.funcDel()">删除</el-button>
       <el-button size="mini" icon="el-icon-refresh" @click="g_cc.func_reload()">刷新</el-button>
     </el-header>
     <el-main class='x-main'>
@@ -18,7 +17,7 @@
           <el-input name="compKw" v-model="form_q.compKw" placeholder="名称"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="g_page.funcGetList">搜索</el-button>
+          <el-button type="primary" @click="g_page.funcSearch">搜索</el-button>
         </el-form-item>
       </el-form>
       <div class="table-wrap">

@@ -246,12 +246,18 @@ common.func_axios = function (axios_data)
         //
         g_vue.$refs.form.clearValidate()
         //
+        let err_key__first = '';
         let errs = obj.response.data.return_data.errors
         for (var key in errs)
         {
           // debugger
-          let err = errs[key]
-          let err_field = key
+          let err = errs[key];
+          let err_field = key;
+          //记录第一个错误的key
+          if (!err_key__first)
+          {
+            err_key__first = err_field;
+          }
           //
           let form_rules = g_vue.form_rules[err_field]
           // console.log(form_rules)
@@ -295,7 +301,21 @@ common.func_axios = function (axios_data)
           g_vue.$refs.form.validateField(err_field)
         }
         //
-        console.log(g_vue.form_rules);
+        console.log('表单验证', g_vue.form_rules);
+        //
+        console.log('切换第一个err，el-tag');
+        if (err_key__first)
+        {
+          //获取第一个错误所在的tag name
+          let err_dom__first = g_vue.$refs[err_key__first];
+          if (err_dom__first)
+          {
+            let tag_name = err_dom__first.$parent.name;
+            console.log(`第一个错误所在的tag_name=${tag_name}`);
+            g_vue.page_tag = tag_name;
+          }
+        }
+        // g_vue.$refs
         //
         let errmsg = '提交的数据不正确，请重新输入';
         if (obj.response.data.errmsg)

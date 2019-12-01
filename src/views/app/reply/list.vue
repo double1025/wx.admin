@@ -14,7 +14,7 @@
           <el-input name="compKw" v-model="form_q.compKw" placeholder="名称"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="g_page.funcGetList">搜索</el-button>
+          <el-button type="primary" @click="g_page.funcSearch">搜索</el-button>
         </el-form-item>
       </el-form>
       <div class="table-wrap">
@@ -79,6 +79,7 @@
         </el-form-item>
         <el-form-item :label="isMsg()?'图文-描述':'回复内容'" prop="reply_desc">
           <el-input type="textarea" :rows="5" v-model="form.reply_desc"/>
+<!--          <p class="">发送文本消息时，支持插入跳小程序的文字链文本内容</p>-->
         </el-form-item>
         <el-form-item v-show="isMsg()" label="跳转方式" prop="reply_redirect_type">
           <el-radio v-model="form.reply_redirect_type" label="">键跳转</el-radio>

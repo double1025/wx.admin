@@ -14,7 +14,7 @@
           <el-input name="compKw" v-model="form_q.compKw" placeholder="名称"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="g_page.funcGetList">搜索</el-button>
+          <el-button type="primary" @click="g_page.funcSearch">搜索</el-button>
         </el-form-item>
       </el-form>
       <div class="table-wrap">

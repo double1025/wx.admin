@@ -28,6 +28,7 @@ class PageBase
       page_index: 1,
       page_size: 10,
       page_total: 0,
+      page_tag: '1',
       checked: false,
     };
 

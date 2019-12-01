@@ -2,14 +2,14 @@
   <el-container>
     <el-main class='x-main-edit'>
       <el-form ref="form" :rules="form_rules" :model="form" size="mini" label-width="15%">
-        <el-tabs type="border-card">
+        <el-tabs type="border-card" v-model="page_tag">
           <!---->
           <!---->
-          <el-tab-pane :label="page_info.title">
-            <el-form-item label="图文-标题" prop="reply_title">
+          <el-tab-pane :label="page_info.title" name="1">
+            <el-form-item label="图文-标题" prop="reply_title" ref="reply_title">
               <el-input v-model="form.reply_title"/>
             </el-form-item>
-            <el-form-item label="图文-图片" prop="reply_pic">
+            <el-form-item label="图文-图片" prop="reply_pic" ref="reply_pic">
               <x-upload-imgs ref="uploadEle" :sortable="true" :max-num="1"
                              v-bind:value.sync="form.reply_pic_imgs"
                              :remote-fuc="g_page.funcUpdateImg"
@@ -23,6 +23,9 @@
                 <el-radio :label="0">关闭</el-radio>
                 <el-radio :label="1">开启</el-radio>
               </el-radio-group>
+              <div>
+                <el-tag type="info" size="small">开启：应用可以分享好友或者朋友圈</el-tag>
+              </div>
             </el-form-item>
             <el-form-item v-show="do_share()" label="分享-标题" prop="reply_share_title">
               <el-input v-model="form.reply_share_title"/>
@@ -53,8 +56,8 @@
           </el-tab-pane>
           <!---->
           <!---->
-          <el-tab-pane label="模板">
-            <el-form-item label="应用模板" prop="reply_app_file">
+          <el-tab-pane label="模板" name="2">
+            <el-form-item label="应用模板" prop="reply_app_file" ref="reply_app_file">
               <el-col :span="6">
                 <el-input v-model="form.reply_app_file"/>
               </el-col>
@@ -89,7 +92,8 @@
         },
         mounted()
         {
-            console.log(this.$route.query)
+            console.log('mounted');
+            console.log(this.$route.query);
 
             this.g_page.funcSetVue(this);
             //
@@ -107,6 +111,9 @@
 
             let data = this.$route.query;
             this.g_page.funcEdit(data);
+
+            // debugger
+            // console.log('tag=', this.$refs.reply_app_file.$parent.name);
         },
         methods: {
             funcGenOauthUrl()
