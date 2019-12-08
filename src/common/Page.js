@@ -172,9 +172,9 @@ class Page
     let g_vue = this.g_vue;
     if (res.data.errcode == 0)
     {
-      g_vue.page_info = res.return_data['page_info'];
-      g_vue.list_data = res.return_data['list'];
-      g_vue.page_total = res.return_data['count']
+      g_vue.page_info = res['page_info'];
+      g_vue.list_data = res['list'];
+      g_vue.page_total = res['count']
       console.log('list_data', g_vue.list_data);
 
       if (typeof (g_vue.funcGetListCommonSuccessAfter) != "undefined")
@@ -283,8 +283,8 @@ class Page
         success: function (res)
         {
           row = {};
-          row = Object.assign(row, res.return_data);
-          page.g_vue.page_info = res.return_data['page_info'];
+          row = Object.assign(row, res.data);
+          page.g_vue.page_info = res['page_info'];
           console.log('funcEdit:success', row);
           page.funcShowDialog(row);
         }
@@ -562,8 +562,8 @@ class Page
         console.log('funcUpdateImg:success');
         if (res.errcode == 0)
         {
-          console.log(res.return_data.img);
-          func(res.return_data.img);
+          console.log(res.img);
+          func(res.img);
         }
         else
         {

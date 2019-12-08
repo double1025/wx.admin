@@ -13,7 +13,7 @@
 					<svg-icon icon-class="password"/>
 				</span>
         <el-input :type="pwdType" v-model="form.password" name="password" auto-complete="on" placeholder="密码"
-                  @keyup.enter.native="handleLogin"/>
+                  @keyup.enter.native="func_login"/>
         <span class="show-pwd" @click="showPwd">
 					<svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'"/>
 				</span>
@@ -155,18 +155,14 @@
                         {
                             //
                             // debugger
-                            let login_data = obj.return_data
-                            let token = login_data['token'];
+                            let token = obj.token;
                             if (!token)
                             {
                                 page.g_cc.func_alert('参数异常', 'error')
                                 return
                             }
                             //记录cookie
-                            for (let key in login_data)
-                            {
-                                Cookies.set(key, login_data[key])
-                            }
+                            Cookies.set('token', token)
                             //
                             page.g_cc.func_alert('登陆成功', 'success', function ()
                             {
@@ -178,9 +174,9 @@
                         }
                         else
                         {
-                            if (obj.return_data && obj.return_data.show_code)
+                            if (obj && obj.show_code)
                             {
-                                page.show_code = obj.return_data.show_code;
+                                page.show_code = obj.show_code;
                                 if (page.show_code)
                                 {
                                     page.funcReloadVcode();

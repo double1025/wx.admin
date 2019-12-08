@@ -40,7 +40,7 @@ const oa_user = {
             if (obj.errcode == 0)
             {
               console.log('获取用户权限：成功')
-              let apps = obj.return_data.apps;
+              let apps = obj.apps;
               const routers = asyncRouterMap.filter(v =>
               {
                 let is_pass = false;
@@ -68,7 +68,7 @@ const oa_user = {
               // console.log(routers)
 
               let page_user = {
-                'acc': obj.return_data.acc,
+                'acc': obj.acc,
                 'routes': routers,
               };
               commit('PageUser', page_user);

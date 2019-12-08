@@ -5,15 +5,9 @@
         <el-tabs type="border-card">
           <!---->
           <!---->
-          <el-tab-pane :label="page_info.title">
-            <el-form-item label="微信公众平台" prop="aconfig_app_id">
-              登陆微信MP后台获取信息
-            </el-form-item>
-            <el-form-item label="类型" prop="aconfig_type">
-              <el-radio-group v-model="form.aconfig_type">
-                <el-radio label="wx">微信公众号</el-radio>
-                <el-radio label="wxapp">微信小程序</el-radio>
-              </el-radio-group>
+          <el-tab-pane :label="type_name()">
+            <el-form-item :label="type_name()" prop="aconfig_app_id">
+              <el-link href="https://mp.weixin.qq.com" target="_blank" type="success">登陆微信MP后台获取信息</el-link>
             </el-form-item>
             <el-form-item label="APP ID" prop="aconfig_app_id">
               <el-input v-model="form.aconfig_app_id"/>
@@ -45,7 +39,7 @@
           </el-tab-pane>
           <!---->
           <!---->
-          <el-tab-pane label="微信接口配置信息">
+          <el-tab-pane label="回复配置信息" :disabled="form.aconfig_type=='wxapp'">
             <el-form-item label="URL">
               <el-input :disabled="true" v-model="form.url"/>
             </el-form-item>
@@ -102,6 +96,10 @@
             this.g_page.funcEdit(data);
         },
         methods: {
+            type_name()
+            {
+                return this.form.aconfig_type == 'wx' ? '微信公众号' : '微信小程序';
+            },
             pay_enable()
             {
                 return this.form.aconfig_pay_enable == 1;

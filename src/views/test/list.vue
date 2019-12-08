@@ -200,8 +200,8 @@
                         {
                             // page.g_cc.func_alert('密码重置成功');
                             // func(false);
-                            console.log(res.return_data.img);
-                            func(res.return_data.img);
+                            console.log(res.img);
+                            func(res.img);
                         }
                         else
                         {

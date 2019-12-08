@@ -247,7 +247,7 @@ common.func_axios = function (axios_data)
         g_vue.$refs.form.clearValidate()
         //
         let err_key__first = '';
-        let errs = obj.response.data.return_data.errors
+        let errs = obj.response.data.errors
         for (var key in errs)
         {
           // debugger

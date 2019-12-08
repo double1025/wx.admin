@@ -130,7 +130,7 @@
             funcGetListCommonSuccessAfter(res)
             {
                 console.log('funcGetListCommonSuccessAfter');
-                this.super_uid = res.data.return_data['super_uid'];
+                this.super_uid = res.data['super_uid'];
             },
             funcSaveBefore(data)
             {

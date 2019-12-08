@@ -141,7 +141,7 @@ export const asyncRouterMap = [
     // name: '基础应用',
     meta: {
       title: '基础应用',
-      icon: 'user'
+      icon: 'guide'
     },
     children: [
       {
@@ -230,6 +230,51 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/wxapp',
+    component: Layout,
+    meta: {
+      title: '选课小程序',
+      icon: 'education'
+    },
+    children: [
+      {
+        path: '/wxapp_xk/user_list',
+        name: 'wxapp_xk',
+        meta: {
+          title: '用户列表'
+        },
+        component: () => import('@/views/app_wxapp/wxapp_xk/user_list'),
+      },
+      {
+        path: '/wxapp_xk/subject_list',
+        name: 'wxapp_xk',
+        meta: {
+          title: '设置题目',
+        },
+        component: () => import('@/views/app_wxapp/wxapp_xk/subject_list'),
+      },
+      {
+        path: '/wxapp_xk/subject_edit',
+        name: 'wxapp_xk',
+        hidden: true,
+        meta: {
+          title: '添加题目',
+        },
+        component: () => import('@/views/app_wxapp/wxapp_xk/subject_edit'),
+      },
+      {
+        path: '/wxapp_xk/list',
+        name: 'wxapp_xk',
+        hidden: true,
+        meta: {
+          title: '统计',
+        },
+        component: () => import('@/views/app/reply/list'),
+      }
+    ]
+  },
+  ////////
   //要放最后面
   {
     path: '*',
