@@ -552,7 +552,7 @@ class Page
     //
     let page = this;
     page.g_cc.func_axios({
-      url: '/a_common/admin/file/uploadImg',
+      url: '/z_common/admin/file/uploadImg',
       method: 'post',
       data: {
         file0: file,

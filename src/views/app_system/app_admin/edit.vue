@@ -59,7 +59,7 @@
           <el-tab-pane label="模板" name="2">
             <el-form-item label="应用模板" prop="reply_app_file" ref="reply_app_file">
               <el-col :span="6">
-                <el-input v-model="form.reply_app_file"/>
+                <el-input v-model="form.reply_app_file" placeholder="默认：t_001"/>
               </el-col>
             </el-form-item>
           </el-tab-pane>
