@@ -35,6 +35,9 @@
         </el-button>
       </el-form-item>
     </el-form>
+    <div class="footer">
+      <a href="http://admin.siyoumi.com">粤ICP备15103984号-2</a> COPYRIGHT © overtrue.
+    </div>
   </div>
 </template>
 
@@ -241,6 +244,16 @@
   $bg: #2d3a4b;
   $dark_gray: #889aa4;
   $light_gray: #eee;
+
+  .footer {
+    color: #d9d9d9;
+    font-size: 13px;
+    height: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+  }
 
   .login-container {
     position: fixed;
