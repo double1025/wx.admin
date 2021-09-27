@@ -25,19 +25,23 @@ import '@/permission' // permission control
 import '../mock' // simulation data
 
 import common from '@/utils/common'
-import PageBase from '@/common/PageBase'
-import Page from '@/common/Page'
+//自定义组件
 import UploadImgs from "@/components/upload-imgs";
-
+import CompReply from '@/components/CompReply'
+import CompReplyEdit from '@/components/CompReplyEdit'
+import CompImg from '@/components/CompImg'
 
 Vue.prototype.g_cc = common;
 
 //page
-Vue.prototype.p_page_base = new PageBase();
-Vue.prototype.g_page = new Page();
+// Vue.prototype.p_page_base = new PageBase();
+// Vue.prototype.g_page = new Page();
 
 Vue.use(ElementUI)
 Vue.component('x-upload-imgs', UploadImgs)
+Vue.component('CompImg', CompImg)
+Vue.component('CompReply', CompReply)
+Vue.component('CompReplyEdit', CompReplyEdit)
 
 Vue.config.productionTip = false
 

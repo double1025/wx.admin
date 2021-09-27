@@ -15,14 +15,19 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "element-ui": "2.8.2",
+    "crypto-js": "^4.0.0",
+    "element-ui": "^2.14.1",
+    "file-saver": "^2.0.1",
     "js-cookie": "2.2.0",
     "mockjs": "1.0.1-beta3",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
+    "sortablejs": "^1.10.2",
     "vue": "2.5.17",
+    "vue-baidu-map": "^0.21.22",
     "vue-router": "3.0.1",
-    "vuex": "3.0.1"
+    "vuex": "3.0.1",
+    "xlsx": "^0.14.1"
   },
   "devDependencies": {
     "autoprefixer": "8.5.0",

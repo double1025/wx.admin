@@ -37,7 +37,7 @@
               <div v-html="data.row.abc_yn"></div>
             </template>
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column fixed="right" label="操作">
             <template slot-scope="data">
               <el-button type="primary" size="mini" @click="g_page.funcShowDialog(data.row)">编辑</el-button>
             </template>
@@ -48,7 +48,7 @@
     <!---->
     <!---->
     <!-- 分页 -->
-    <el-footer>
+    <el-footer v-if="page_show">
       <el-pagination class="paging" background layout="total, prev, pager, next, jumper"
                      @current-change="g_page.funcPageChange"
                      :current-page="page_index" :page-size="page_size" :total="page_total">

@@ -47,14 +47,14 @@ export const constantRouterMap = [
     path: '/example',
     component: Layout,
     redirect: '/example/table',
-    name: 'Example',
+    // name: 'Example',
     meta: {
       title: '例子',
       icon: 'example'
     },
     children: [{
       path: 'table',
-      name: 'Table',
+      // name: 'Table',
       component: () => import('@/views/table/index'),
       meta: {
         title: 'Table123',
@@ -63,7 +63,7 @@ export const constantRouterMap = [
     },
       {
         path: 'tree',
-        name: 'Tree',
+        // name: 'Tree',
         component: () => import('@/views/tree/index'),
         meta: {
           title: 'Tree',
@@ -77,7 +77,7 @@ export const constantRouterMap = [
     component: Layout,
     children: [{
       path: 'index',
-      name: 'Form',
+      // name: 'Form',
       component: () => import('@/views/form/index'),
       meta: {
         title: 'Form',
@@ -88,7 +88,7 @@ export const constantRouterMap = [
   {
     path: '/prize',
     component: Layout,
-    name: 'prize',
+    // name: 'prize',
     meta: {
       title: '活动相关',
       icon: 'nested'
@@ -96,13 +96,13 @@ export const constantRouterMap = [
     children: [{
       path: 'prize',
       component: () => import('@/views/common'),
-      name: '我的奖品',
+      // name: '我的奖品',
       meta: {
         title: '我的奖品'
       },
       children: [{
         path: 'x',
-        name: '图文',
+        // name: '图文',
         component: () => import('@/views/prize/list'),
         meta: {
           title: '图文'
@@ -110,7 +110,7 @@ export const constantRouterMap = [
       },
         {
           path: 'xx',
-          name: '设置',
+          // name: '设置',
           component: () => import('@/views/prize/setting'),
           meta: {
             title: '设置'
@@ -118,7 +118,7 @@ export const constantRouterMap = [
         },
         {
           path: 'xxx',
-          name: '奖品列表',
+          // name: '奖品列表',
           component: () => import('@/views/prize/list'),
           meta: {
             title: '奖品列表'
@@ -129,21 +129,21 @@ export const constantRouterMap = [
       {
         path: 'act',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: '活动',
+        // name: '活动',
         meta: {
           title: '活动'
         },
         children: [{
           path: 'x',
           component: () => import('@/views/nested/menu1/menu1-1'),
-          name: '图文',
+          // name: '图文',
           meta: {
             title: '图文'
           }
         },
           {
             path: 'xxx',
-            name: '活动列表',
+            // name: '活动列表',
             component: () => import('@/views/nested/menu1/menu1-3'),
             meta: {
               title: '活动列表'
@@ -169,7 +169,7 @@ export const constantRouterMap = [
     path: '/dashboard',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
+    // name: 'Dashboard',
     hidden: true,
     children: [{
       path: '/dashboard',
@@ -180,7 +180,7 @@ export const constantRouterMap = [
   {
     path: '/test',
     component: Layout,
-    // name: 'test',
+    // // name: 'test',
     meta: {
       title: '测试',
       icon: 'form'
@@ -189,7 +189,7 @@ export const constantRouterMap = [
       {
         path: '/test_app',
         component: () => import('@/views/common'),
-        name: '测试应用',
+        // name: '测试应用',
         meta: {
           title: '测试应用'
         },
@@ -230,7 +230,7 @@ export const asyncRouterMap = [
   {
     path: '/pwd',
     component: Layout,
-    name: 'pwd',
+    // name: 'pwd',
     hidden: true,
     meta: {
       title: '修改密码',
@@ -244,7 +244,7 @@ export const asyncRouterMap = [
   {
     path: '/x_app_system',
     component: Layout,
-    // name: '基础应用',
+    // // name: '基础应用',
     meta: {
       title: '基础应用',
       icon: 'form'
@@ -252,7 +252,7 @@ export const asyncRouterMap = [
     children: [{
       path: '/account',
       component: () => import('@/views/common'),
-      name: 'account',
+      // name: 'account',
       meta: {
         title: '账号管理'
       },

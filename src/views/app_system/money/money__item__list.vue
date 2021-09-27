@@ -1,0 +1,142 @@
+<template>
+	<el-container>
+		<el-header class='x-header'>
+			<div class="title">
+				<b>
+					{{ page_info.title }}
+				</b>
+				<el-button size="mini" icon="el-icon-s-tools" type="primary" plain @click="g_page.funcRedirectAppEdit()"></el-button>
+			</div>
+			<el-button v-if="$route.query.callback_url" size="mini" icon="el-icon-back" @click="g_page.funcBack">
+				返回
+			</el-button>
+			<el-button size="mini" type="success" icon="el-icon-edit" @click="g_page.funcRedirectEdit(`money__item__edit`)">
+				添加
+			</el-button>
+			<el-button size="mini" type="danger" icon="el-icon-delete" @click="g_page.funcDel()">删除</el-button>
+			<el-button size="mini" icon="el-icon-refresh" @click="g_page.funcReload()">刷新</el-button>
+		</el-header>
+		<el-main class='x-main'>
+			<el-form :inline="true" :model="form_q" size="mini">
+				<el-form-item label="名称">
+					<el-input name="compKw" v-model="form_q.compKw" placeholder="标题"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="g_page.funcSearch">搜索</el-button>
+				</el-form-item>
+			</el-form>
+			<div class="table-wrap">
+				<el-table stripe ref="multipleTable" tooltip-effect="dark"
+						  @selection-change="g_page.funcTableSelectionChange"
+						  :data="list_data">
+					<el-table-column type="selection"></el-table-column>
+					<el-table-column label="编号">
+						<template slot-scope="data">
+							<div v-html="data.row.id"></div>
+						</template>
+					</el-table-column>
+					<el-table-column label="名称">
+						<template slot-scope="data">
+							<div v-html="data.row.abc_name"></div>
+						</template>
+					</el-table-column>
+					<el-table-column label="充值金额">
+						<template slot-scope="data">
+							{{ data.row.abc_num_00 }}
+						</template>
+					</el-table-column>
+					<el-table-column label="赠送">
+						<template slot-scope="data">
+							<div v-if="data.row.abc_num_01>0">赠送余额：{{ data.row.abc_num_01 }}元</div>
+							<div v-if="data.row.abc_int_00>0">赠送积分：{{ data.row.abc_int_00 }}</div>
+							<div v-if="data.row.pset_name">
+								<div>赠送奖品：{{ data.row.pset_name }}</div>
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="排序">
+						<template slot-scope="data">
+							{{ data.row.abc_order }}
+						</template>
+					</el-table-column>
+					<el-table-column fixed="right" label="操作">
+						<template slot-scope="data">
+							<el-button type="primary" size="mini" @click="g_page.funcRedirectEdit('money__item__edit',data.row)">
+								编辑
+							</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<a target="_blank"></a>
+			</div>
+		</el-main>
+		<!---->
+		<!---->
+		<!-- 分页 -->
+		<el-footer v-if="page_show">
+			<el-pagination class="paging" background layout="total, prev, pager, next, jumper"
+						   @current-change="g_page.funcPageChange"
+						   :current-page="page_index" :page-size="page_size" :total="page_total">
+			</el-pagination>
+		</el-footer>
+		<!---->
+		<!---->
+		<!-- 弹框 -->
+		<el-dialog :title="form.app_idx+'配置'" :visible.sync="form_dialog_visible" width="70%">
+			<el-form ref="form" :rules="form_rules" :model="form" size="mini" label-width="15%">
+				<el-form-item label="入口链接" v-if="!g_page.funcIsAdminAdd()">
+					<el-input :disabled="true" v-model="form.oauth_url"/>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="g_page.funcBack" size="mini">取消</el-button>
+				<el-button type="success" @click="g_page.funcSave" size="mini">保存</el-button>
+			</div>
+		</el-dialog>
+		<!---->
+		<!---->
+		<!---->
+	</el-container>
+</template>
+
+
+<script>
+	export default {
+		data() {
+			let page_data = { super_uid: '' }
+			//
+			page_data = this.g_cc.funcGetInitData(page_data)
+			//
+			return page_data
+		},
+		mounted() {
+			console.log('mounted')
+			//
+			this.g_page.funcSetVue(this)
+			// 应用ID
+			this.g_page.funcSetApiUrlList('/xadmin/money/money__item__list')
+			this.g_page.funcSetApiUrlDel('/xadmin/money/money__item__list/del')
+			//页码
+			this.g_page.funcSetPageSize(50)
+			//搜索
+			this.form_q = {
+				'compKw': ''
+			}
+			this.g_page.funcGetList()
+			//
+			this.form_rules = {
+				acc_uidX: [
+					{
+						required: true,
+						message: '必填',
+						trigger: 'blur'
+					}
+				]
+			}
+			//
+		},
+		methods: {
+			////////////////////
+		}
+	}
+</script>

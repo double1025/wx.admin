@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>X</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<title>平台</title>
+	<script type="text/javascript" src="/g_config.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+</body>
 </html>
+
+<script>
+	var is_chrome = navigator.userAgent.indexOf('Chrome') > -1
+	if (!is_chrome) {
+		alert('建议使用【谷歌浏览器】，则否会有兼容性问题')
+	}
+</script>

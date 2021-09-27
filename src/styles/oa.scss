@@ -1,4 +1,7 @@
 //globl oa css
+.el-menu-item, .el-submenu__title {
+  font-size: 13px;
+}
 
 .x-header {
   background-color: #f2f2f2;
@@ -44,4 +47,34 @@
   padding-left: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+//后台提示说明
+
+.x-alert {
+  padding: 0;
+  width: 100%;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.x-alert span {
+  line-height: 17px;
+  color: #999;
+}
+
+.x-alert a {
+  color: blue;
+}
+
+.x-input-30 {
+  width: 30%;
+}
+
+.x-input-60 {
+  width: 60%;
+}
+
+.x-input-90 {
+  width: 90%;
 }
